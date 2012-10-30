@@ -86,21 +86,25 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameStateMenu.cpp" />
-    <ClCompile Include="GameStatePlay.cpp" />
+    <ClCompile Include="GamePlay.cpp" />
+    <ClCompile Include="GameStateManager.cpp" />
+    <ClCompile Include="GameStates.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="OgreInputManager.cpp" />
     <ClCompile Include="OgreManager.cpp" />
-    <ClCompile Include="OgreTerrainManager.cpp" />
+    <ClCompile Include="TerrainManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameStateMenu.h" />
-    <ClInclude Include="GameStatePlay.h" />
+    <ClInclude Include="GamePlay.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameStateManager.h" />
+    <ClInclude Include="GameStates.h" />
+    <ClInclude Include="Interface.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="OgreInputManager.h" />
     <ClInclude Include="OgreManager.h" />
-    <ClInclude Include="OgreTerrainManager.h" />
+    <ClInclude Include="TerrainManager.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateMachine.h" />
   </ItemGroup>

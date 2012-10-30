@@ -1,30 +1,59 @@
+#pragma once
+
 #include "OIS.h"
 #include "OgreFrameListener.h"
 #include "OgreWindowEventUtilities.h"
 #include "OgreRenderWindow.h"
+#include "OgreLogManager.h"
+
+#include "CEGUI.h"
+
+#include "Interface.h"
 
 class OgreInputManager : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {
-protected:
+private:
 
-	OIS::InputManager* im;
-	OIS::Mouse* mouse;
-	OIS::Keyboard* keyboard;
+	OgreInputManager();
+	~OgreInputManager();
+
+	static Interface* _Interface;
+
+	static OgreInputManager* _Instance;
+
+	OIS::InputManager* _InputManager;
+	OIS::Mouse* _Mouse;
+	OIS::Keyboard* _Keyboard;
 
 	bool initInput(Ogre::RenderWindow* window);
 
-	bool forceMouseIntoPosition(float x, float y);
+	//Ogre::WindowListener
+	bool windowClosing(Ogre::RenderWindow* rw);
+
+	void windowClosed(Ogre::RenderWindow* rw);
 
 	// Ogre::FrameListener
-	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt );
+	bool frameRenderingQueued(const Ogre::FrameEvent& evt );
 	
 	// OIS::KeyListener
-	virtual bool keyPressed( const OIS::KeyEvent& evt );
-	virtual bool keyReleased( const OIS::KeyEvent& evt );
+	bool keyPressed( const OIS::KeyEvent& evt );
+	bool keyReleased( const OIS::KeyEvent& evt );
 	
 	// OIS::MouseListener
-	virtual bool mouseMoved( const OIS::MouseEvent& evt );
-	virtual bool mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
-	virtual bool mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
+	bool mouseMoved( const OIS::MouseEvent& evt );
+	bool mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
+	bool mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
 
+public:
+
+	static OgreInputManager* Instance();
+
+	void setInterface(Interface* i);
+
+	bool forceMouseIntoPosition(float x, float y);
+
+	CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
+
+	void destroyInputManager();
+	
 };

@@ -1,31 +1,46 @@
 #include "OgreManager.h"
 
+OgreManager* OgreManager::_Instance = NULL;
+
+OgreManager* OgreManager::Instance()
+{
+	if(!_Instance)
+	{
+		_Instance = new OgreManager();
+	}
+
+	return _Instance;
+}
+
 OgreManager::OgreManager()
 {
-	lWindow = NULL;
-	lCamera = NULL;
-	//rgm = &Ogre::ResourceGroupManager::getSingleton();
+	_Root = NULL;
+	_Window = NULL;
+	_Scene = NULL;
+	_RGM = NULL;
+
+	_Camera = NULL;
+
+	_GUIRenderer = NULL;
 }
 
 OgreManager::~OgreManager()
 {
-	Ogre::LogManager::getSingleton().logMessage("End of Ogre");
+	Ogre::LogManager::getSingleton().logMessage("End of OgreManager");
 
-	lRoot->destroySceneManager(lScene);
-	lRoot->detachRenderTarget("Ogre Game");
-	lWindow->destroy();
-	delete lWindow;
-
-	delete lCamera;
+	delete _Root;
 }
 
 bool OgreManager::initRenderSystem()
 {
+	if(_Root)
+		return true;
+
 	Ogre::String lConfigFileName = "";
 	Ogre::String lPluginsFileName = "";
-	Ogre::String lLogFileName = "OgreLog.LOG";
+	Ogre::String lLogFileName = "MMOLog.LOG";
 
-	lRoot = new Ogre::Root(lConfigFileName, lPluginsFileName, lLogFileName);
+	_Root = new Ogre::Root(lConfigFileName, lPluginsFileName, lLogFileName);
 
 	typedef std::vector <Ogre::String> Strings;
 
@@ -48,98 +63,102 @@ bool OgreManager::initRenderSystem()
 		{
 			lPluginName.append("_d");
 		}
-		lRoot->loadPlugin(lPluginName);
+		_Root->loadPlugin(lPluginName);
 	}
 
-	const Ogre::RenderSystemList& lRenderSystemList = lRoot->getAvailableRenderers();
+	const Ogre::RenderSystemList& lRenderSystemList = _Root->getAvailableRenderers();
 	if(lRenderSystemList.size() == 0)
 	{
 		Ogre::LogManager::getSingleton().logMessage("Sorry, no rendersystem was found.");
 		return false;
 	}
 
-	lRoot->setRenderSystem(lRenderSystemList[0]);
+	_Root->setRenderSystem(lRenderSystemList[0]);
 
 	return true;
 }
 
-Ogre::RenderWindow* OgreManager::createWindow(bool autoCreate, Ogre::String name)
+Ogre::RenderWindow* OgreManager::createWindow(bool autoCreate, Ogre::String name, unsigned int xsize, unsigned int ysize)
 {
+	if(_Window)
+		return _Window;
+
 	bool lCreateAWindowAutomatically = autoCreate;
 	Ogre::String lWindowTitle = name;
 	Ogre::String lCustomCapacities = "";
 
 	if(!(lCreateAWindowAutomatically))
 	{
-		unsigned int lSizeX = 800;
-		unsigned int lSizeY = 600;
+		unsigned int lSizeX = xsize;
+		unsigned int lSizeY = ysize;
 		
 		bool lFullscreen = false;
 		
 		Ogre::NameValuePairList lParams;
 		lParams["vsync"] = "true";
 
-		lRoot->initialise(autoCreate);
+		_Root->initialise(autoCreate);
 
-		lWindow = lRoot->createRenderWindow(lWindowTitle, lSizeX, lSizeY, lFullscreen, &lParams);
+		_Window = _Root->createRenderWindow(lWindowTitle, lSizeX, lSizeY, lFullscreen, &lParams);
 		
 	}else
 	{
-		lWindow = lRoot->initialise(lCreateAWindowAutomatically, lWindowTitle, lCustomCapacities);
+		_Window = _Root->initialise(lCreateAWindowAutomatically, lWindowTitle, lCustomCapacities);
 	}
 
-	return lWindow;
+	return _Window;
 }
 
-bool OgreManager::ogreInit()
+bool OgreManager::sceneManagerInit(Ogre::String name)
 {
-	
-	initRenderSystem();
+	if(_Scene)
+		return true;
 
-	//lWindow = createWindow(false, Ogre::String("MainWindow"));
+	_Scene = _Root->createSceneManager("TerrainSceneManager", name);
 
 	return true;
-
-}
-
-void OgreManager::sceneManagerInit(Ogre::String name)
-{
-
-	lScene = lRoot->createSceneManager("TerrainSceneManager", name);
 }
 
 bool OgreManager::createCamera(Ogre::String name)
 {
-	lCamera = lScene->createCamera(name);
+	if(_Camera)
+		return true;
+
+	_Camera = _Scene->createCamera(name);
 
 	unsigned short lMainViewportZOrder = 100;
-	Ogre::Viewport* vp = lWindow->addViewport(lCamera, lMainViewportZOrder, 0, 0, 1, 1);
+	Ogre::Viewport* vp = _Window->addViewport(_Camera, lMainViewportZOrder, 0, 0, 1, 1);
 	vp->setAutoUpdated(true);
-	vp->setBackgroundColour(Ogre::ColourValue(0,0,1));
+	vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
 
 	float ratio = float(vp->getActualWidth()) / float(vp->getActualHeight());
-	lCamera->setAspectRatio(ratio);
+	_Camera->setAspectRatio(ratio);
 
-	lWindow->setActive(true);
-	lWindow->setAutoUpdated(false);
+	_Window->setActive(true);
+	_Window->setAutoUpdated(false);
 
 	return true;
 }
 
-void OgreManager::loadResourcesFromConfig()
+bool OgreManager::loadResourcesFromConfig()
 {
-	//std::string mResourcesCfg;
+	if(_RGM)
+		return true;
 
-	//#ifdef _DEBUG
- //   mResourcesCfg = "resources_d.cfg";
-	//#else
- //   mResourcesCfg = "resources.cfg";
-	//#endif
+	Ogre::String resources = "resources";
 
-	rgm = &Ogre::ResourceGroupManager::getSingleton();
+	if(OGRE_DEBUG_MODE)
+	{
+		resources.append("_d.cfg");
+	}else
+	{
+		resources.append(".cfg");
+	}
+
+	_RGM = &Ogre::ResourceGroupManager::getSingleton();
 
 	Ogre::ConfigFile cf;
-	cf.load("resources_d.cfg");
+	cf.load(resources);
 
 	Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
 
@@ -158,33 +177,27 @@ void OgreManager::loadResourcesFromConfig()
 			Ogre::ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
 		}
 	}
+
+	return true;
 }
 
 void OgreManager::addResourceGroup(Ogre::String name, bool globalPool)
 {
-	rgm->createResourceGroup(name, globalPool);
+	_RGM->createResourceGroup(name, globalPool);
 }
 
 void OgreManager::addResourceLocation(Ogre::String location, Ogre::String type, Ogre::String group, bool recursive)
 {
-	rgm->addResourceLocation(location, type, group, recursive);
-
-	//rgm->initialiseResourceGroup(group);
-	//rgm->initialiseAllResourceGroups();
+	_RGM->addResourceLocation(location, type, group, recursive);
 }
 
-void OgreManager::attachCamera(Ogre::SceneNode* Node)
-{
-	if(lCamera)
-	{
-		lCamera->setPosition(Node->getPosition());
-		Node->attachObject(lCamera);
-	}
-}
 
-void OgreManager::ceguiInit()
+bool OgreManager::ceguiInit()
 {
-	GUIRenderer = &CEGUI::OgreRenderer::bootstrapSystem(*lWindow);
+	if(_GUIRenderer)
+		return true;
+
+	_GUIRenderer = &CEGUI::OgreRenderer::bootstrapSystem(*_Window);
 	
 	CEGUI::Imageset::setDefaultResourceGroup("Imagesets");
 	CEGUI::Font::setDefaultResourceGroup("Fonts");
@@ -196,4 +209,15 @@ void OgreManager::ceguiInit()
 	CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
 
 	CEGUI::MouseCursor::getSingleton().setImage( CEGUI::System::getSingleton().getDefaultMouseCursor());
+
+	return true;
+}
+
+void OgreManager::attachCamera(Ogre::SceneNode* Node)
+{
+	if(_Camera)
+	{
+		_Camera->setPosition(Node->getPosition());
+		Node->attachObject(_Camera);
+	}
 }

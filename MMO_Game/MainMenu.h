@@ -1,5 +1,8 @@
+#pragma once
+
 #include "OgreManager.h"
 #include "OgreInputManager.h"
+#include "Interface.h"
 
 #include <CEGUI.h>
 #include <CEGUISystem.h>
@@ -7,7 +10,7 @@
 #include<string>
 
 
-class MainMenu : OgreInputManager
+class MainMenu : public Interface
 {
 private:
 
@@ -19,12 +22,21 @@ private:
 
 public:
 
+	MainMenu();
 	MainMenu(OgreManager* om);
 	~MainMenu();
 
 	bool menuInit();
 
 	void update();
+
+	void cleanUp();
+
+	bool CEGUIEventPlay(const CEGUI::EventArgs& arg);
+	bool CEGUIEventQuit(const CEGUI::EventArgs& arg);
+
+	//Ogre::WindowListener
+	void windowClosed(Ogre::RenderWindow* rw);
 
 	// Ogre::FrameListener
 	bool frameRenderingQueued(const Ogre::FrameEvent& evt );

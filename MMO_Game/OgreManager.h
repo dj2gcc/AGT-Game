@@ -6,10 +6,7 @@
 #include "OgreRenderWindow.h"
 #include "OgreWindowEventUtilities.h"
 #include "OgreConfigFile.h"
-
-#include "Terrain\OgreTerrain.h"
-#include "Terrain\OgreTerrainGroup.h"
-
+#include "OgreLogManager.h"
 
 #include <CEGUI.h>
 #include <CEGUISystem.h>
@@ -21,34 +18,44 @@
 class OgreManager
 {
 private:
-	Ogre::Root* lRoot;
-	Ogre::RenderWindow* lWindow;
-	Ogre::SceneManager* lScene;
-	Ogre::ResourceGroupManager* rgm; 
 
-	Ogre::Camera* lCamera;
-
-	CEGUI::OgreRenderer* GUIRenderer;
-public:
 	OgreManager();
 	~OgreManager();
 
-	bool ogreInit();
-	void ceguiInit();
-	void sceneManagerInit(Ogre::String name);
+	static OgreManager* _Instance;
+
+	Ogre::Root* _Root;
+	Ogre::RenderWindow* _Window;
+	Ogre::SceneManager* _Scene;
+	Ogre::ResourceGroupManager* _RGM; 
+
+	Ogre::Camera* _Camera;
+
+	CEGUI::OgreRenderer* _GUIRenderer;
+public:
+
+	static OgreManager* Instance();
+
+	void destroyOgreManager(){ if(_Instance) delete _Instance; }
 
 	bool initRenderSystem();
-	Ogre::RenderWindow* createWindow(bool autoCreate, Ogre::String name);
+	Ogre::RenderWindow* createWindow(bool autoCreate, Ogre::String name, unsigned int xsize = 800, unsigned int ysize = 600);
+	bool sceneManagerInit(Ogre::String name);
+
 	bool createCamera(Ogre::String name);
 
-	void loadResourcesFromConfig();
+	bool loadResourcesFromConfig();
+	
 	void addResourceGroup(Ogre::String name, bool globalPool);
 	void addResourceLocation(Ogre::String location, Ogre::String type, Ogre::String group, bool recursive);
 
+	bool ceguiInit();
+
 	void attachCamera(Ogre::SceneNode* Node);
 
-	Ogre::RenderWindow* getWindow() { return lWindow; }
-	Ogre::Root* getRoot() { return lRoot; }
-	Ogre::SceneManager* getSceneManager() { return lScene; }
-	Ogre::ResourceGroupManager* getRgm() { return rgm; }
+	Ogre::RenderWindow* getWindow() { return _Window; }
+	Ogre::Root* getRoot() { return _Root; }
+	Ogre::SceneManager* getSceneManager() { return _Scene; }
+	Ogre::ResourceGroupManager* getRgm() { return _RGM; }
+	bool getCEGUIStatus() { if(_GUIRenderer) return true; else return false; }
 };

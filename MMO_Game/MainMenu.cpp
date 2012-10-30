@@ -1,59 +1,32 @@
-#include "MainMenu.h"
+#include "GameStateManager.h"
 
-MainMenu::MainMenu(OgreManager* om)
+MainMenu::MainMenu() : Interface()
 {
-	_OgreManager = new OgreManager();
+	_OgreManager = StateManager.getOgreManager();
+}
+
+MainMenu::MainMenu(OgreManager* om) : Interface()
+{
+	_OgreManager = om;
 }
 
 MainMenu::~MainMenu()
 {
+	Ogre::LogManager::getSingleton().logMessage("End of MainMenu");
 }
 
 bool MainMenu::menuInit()
 {
-	_OgreManager->initRenderSystem();
-
-	_OgreManager->createWindow(false, "MainWindow");
-
-	//Resource Group Init
-		_OgreManager->loadResourcesFromConfig();
-		_OgreManager->addResourceGroup(Ogre::String("GameResources"), false);
-
-		char buffer[MAX_PATH]; 
-		GetModuleFileName( NULL, buffer, MAX_PATH ); 
-		std::string::size_type pos = std::string( buffer ).find_last_of( "\\/" ); 
-		std::string s = std::string( buffer ).substr( 0, pos); 
-
-		_OgreManager->addResourceLocation(Ogre::String(s + "\\Resources\\"), Ogre::String("FileSystem"), Ogre::String("GameResources"), false);
-		_OgreManager->getRgm()->initialiseResourceGroup(Ogre::String("GameResources"));
-	//Resource Group Init End
-
-	//Camera and Window init
-
-		
-
-		_OgreManager->sceneManagerInit("MainSceneManager");
-
-		_OgreManager->createCamera("MainCamera");
-
-	//Camera and Window init end
-
-	//Input Init
-		initInput(_OgreManager->getWindow());
-
-		mouse->setBuffered(true);
-		keyboard->setBuffered(true);
-
-		mouse->setEventCallback(this);
-		keyboard->setEventCallback(this);
-
-		Ogre::WindowEventUtilities::addWindowEventListener(_OgreManager->getWindow(), this);
-
-		_OgreManager->getRoot()->addFrameListener(this);
-	//Input Init end
-
 	//CEGUI Init
-		_OgreManager->ceguiInit();
+		if(!_OgreManager->getCEGUIStatus())
+		{
+			_OgreManager->ceguiInit();
+
+			//Sync mouse position
+				CEGUI::Point mousePos = CEGUI::MouseCursor::getSingleton().getPosition();
+				OgreInputManager::Instance()->forceMouseIntoPosition(mousePos.d_x, mousePos.d_y);
+			//Sync mouse position end
+		}	
 	//CEGUI Init end
 
 	//Create Menu
@@ -64,44 +37,53 @@ bool MainMenu::menuInit()
 		_PlayButton->setSize(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.05, 0)));
 		_PlayButton->setPosition(CEGUI::UVector2(CEGUI::UDim(0.3, 0) ,CEGUI::UDim(0.5, 0)));
 		_PlayButton->setText("Play");
+		_PlayButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainMenu::CEGUIEventPlay, this));
 		_CEGUISheet->addChildWindow(_PlayButton);
 
 		_QuitButton = wmgr.createWindow("TaharezLook/Button", "OgreGame/MainSheet/QuitButton");
 		_QuitButton->setSize(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.05, 0)));
 		_QuitButton->setPosition(CEGUI::UVector2(CEGUI::UDim(0.6, 0) ,CEGUI::UDim(0.5, 0)));
 		_QuitButton->setText("Quit");
+		_QuitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainMenu::CEGUIEventQuit, this));
 		_CEGUISheet->addChildWindow(_QuitButton);
 
 		CEGUI::System::getSingleton().setGUISheet(_CEGUISheet);
 	//Create Menu end
 
-	CEGUI::Point mousePos = CEGUI::MouseCursor::getSingleton().getPosition();
-	forceMouseIntoPosition(mousePos.d_x, mousePos.d_y);
-	
 	_OgreManager->getRoot()->clearEventTimes();
-		return true;
+	return true;
+}
+
+void MainMenu::cleanUp()
+{
+	CEGUI::WindowManager::getSingleton().destroyAllWindows();
 }
 
 void MainMenu::update()
 {
-	while(!_OgreManager->getWindow()->isClosed())
-	{
-		Ogre::WindowEventUtilities::messagePump();
+	Ogre::WindowEventUtilities::messagePump();
 
-		_OgreManager->getWindow()->update(false);
+	_OgreManager->getWindow()->update(false);
 	
-		_OgreManager->getRoot()->renderOneFrame();
+	_OgreManager->getRoot()->renderOneFrame();
 
-		_OgreManager->getWindow()->swapBuffers(true);
+	_OgreManager->getWindow()->swapBuffers(true);
+}
+
+//Ogre::WindowListener
+void MainMenu::windowClosed(Ogre::RenderWindow* rw)
+{
+	if(rw->getName() == "MainWindow")
+	{
+		StateManager.ChangeState(CleanupState);
 	}
-		
 }
 
 // Ogre::FrameListener
 bool MainMenu::frameRenderingQueued(const Ogre::FrameEvent& evt )
 {
-	mouse->capture();
-	keyboard->capture();
+	if(_OgreManager->getWindow()->isClosed())
+		return false;
 
 	CEGUI::System::getSingleton().injectTimePulse(evt.timeSinceLastFrame);
 
@@ -111,11 +93,15 @@ bool MainMenu::frameRenderingQueued(const Ogre::FrameEvent& evt )
 // OIS::KeyListener
 bool MainMenu::keyPressed( const OIS::KeyEvent& evt )
 {
+	CEGUI::System &sys = CEGUI::System::getSingleton();
+	sys.injectKeyDown(evt.key);
+	sys.injectChar(evt.text);
 	return true;
 }
 
 bool MainMenu::keyReleased( const OIS::KeyEvent& evt )
 {
+	CEGUI::System::getSingleton().injectKeyUp(evt.key);
 	return true;
 }
 
@@ -124,7 +110,7 @@ bool MainMenu::mouseMoved( const OIS::MouseEvent& evt )
 {
 	CEGUI::System &sys = CEGUI::System::getSingleton();
 	sys.injectMouseMove(evt.state.X.rel, evt.state.Y.rel);
-	// Scroll wheel.
+
 	if (evt.state.Z.rel)
 		sys.injectMouseWheelChange(evt.state.Z.rel / 120.0f);
 	return true;
@@ -132,10 +118,26 @@ bool MainMenu::mouseMoved( const OIS::MouseEvent& evt )
 
 bool MainMenu::mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
 {
+	CEGUI::System::getSingleton().injectMouseButtonDown(OgreInputManager::Instance()->convertButton(id));
 	return true;
 }
 
 bool MainMenu::mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
 {
+	CEGUI::System::getSingleton().injectMouseButtonUp(OgreInputManager::Instance()->convertButton(id));
+	return true;
+}
+
+bool MainMenu::CEGUIEventPlay(const CEGUI::EventArgs& arg)
+{
+	StateManager.ChangeState(PlayState);
+
+	return true;
+}
+
+bool MainMenu::CEGUIEventQuit(const CEGUI::EventArgs& arg)
+{
+	StateManager.ChangeState(CleanupState);
+
 	return true;
 }

@@ -16,41 +16,41 @@
     <Filter Include="StateMachine">
       <UniqueIdentifier>{19642e08-b00c-40e3-848e-2934f4781764}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameStateManager">
+      <UniqueIdentifier>{1ab6d2f8-3fdb-4989-be37-582c36aeaebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDKs">
+      <UniqueIdentifier>{966435c7-bdf3-454e-8c77-3f7af61d2e0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OgreManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OgreTerrainManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OgreInputManager.cpp">
+    <ClCompile Include="GameStateManager.cpp">
+      <Filter>GameStateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStates.cpp">
+      <Filter>GameStateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameStateMenu.cpp">
-      <Filter>StateMachine</Filter>
+    <ClCompile Include="OgreInputManager.cpp">
+      <Filter>SDKs</Filter>
     </ClCompile>
-    <ClCompile Include="GameStatePlay.cpp">
-      <Filter>StateMachine</Filter>
+    <ClCompile Include="OgreManager.cpp">
+      <Filter>SDKs</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainManager.cpp">
+      <Filter>SDKs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OgreManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OgreTerrainManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MainMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OgreInputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
@@ -59,11 +59,29 @@
     <ClInclude Include="StateMachine.h">
       <Filter>StateMachine</Filter>
     </ClInclude>
-    <ClInclude Include="GameStateMenu.h">
-      <Filter>StateMachine</Filter>
+    <ClInclude Include="GameState.h">
+      <Filter>GameStateManager</Filter>
     </ClInclude>
-    <ClInclude Include="GameStatePlay.h">
-      <Filter>StateMachine</Filter>
+    <ClInclude Include="GameStateManager.h">
+      <Filter>GameStateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStates.h">
+      <Filter>GameStateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OgreInputManager.h">
+      <Filter>SDKs</Filter>
+    </ClInclude>
+    <ClInclude Include="OgreManager.h">
+      <Filter>SDKs</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainManager.h">
+      <Filter>SDKs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
