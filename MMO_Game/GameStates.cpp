@@ -28,7 +28,7 @@ void GameStateStart::Enter(GameStateManager* manager)
 
 	ogremanager->loadResourcesFromConfig();
 
-	manager->_InputManager = OgreInputManager::Instance();
+	OgreInputManager::Instance()->initInput(ogremanager->getWindow());
 }
 
 void GameStateStart::Execute(GameStateManager* manager)
@@ -82,8 +82,8 @@ void GameStateMenu::Enter(GameStateManager* manager)
 	if(!mainmenu)
 		mainmenu = new MainMenu(ogremanager);
 
-	manager->_InputManager->setInterface(mainmenu);
 	mainmenu->menuInit();
+	manager->_InputManager->setInterface(mainmenu);
 }
 
 void GameStateMenu::Execute(GameStateManager* manager)
@@ -113,8 +113,8 @@ void GameStatePlay::Enter(GameStateManager* manager)
 		gameplay = new GamePlay(ogremanager);
 
 	
-	manager->_InputManager->setInterface(gameplay);
 	gameplay->gameplayInit();
+	manager->_InputManager->setInterface(gameplay);
 }
 
 void GameStatePlay::Execute(GameStateManager* manager)

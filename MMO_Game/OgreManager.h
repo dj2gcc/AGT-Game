@@ -47,15 +47,15 @@ public:
 	bool loadResourcesFromConfig();
 	
 	void addResourceGroup(Ogre::String name, bool globalPool);
+	void removeResourceGroup(Ogre::String name);
 	void addResourceLocation(Ogre::String location, Ogre::String type, Ogre::String group, bool recursive);
 
 	bool ceguiInit();
-
-	void attachCamera(Ogre::SceneNode* Node);
 
 	Ogre::RenderWindow* getWindow() { return _Window; }
 	Ogre::Root* getRoot() { return _Root; }
 	Ogre::SceneManager* getSceneManager() { return _Scene; }
 	Ogre::ResourceGroupManager* getRgm() { return _RGM; }
+	Ogre::Camera* getCamera() { return _Camera; }
 	bool getCEGUIStatus() { if(_GUIRenderer) return true; else return false; }
 };

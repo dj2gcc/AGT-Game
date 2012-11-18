@@ -129,7 +129,7 @@ bool OgreManager::createCamera(Ogre::String name)
 	unsigned short lMainViewportZOrder = 100;
 	Ogre::Viewport* vp = _Window->addViewport(_Camera, lMainViewportZOrder, 0, 0, 1, 1);
 	vp->setAutoUpdated(true);
-	vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
+	vp->setBackgroundColour(Ogre::ColourValue(1,0,0));
 
 	float ratio = float(vp->getActualWidth()) / float(vp->getActualHeight());
 	_Camera->setAspectRatio(ratio);
@@ -186,6 +186,11 @@ void OgreManager::addResourceGroup(Ogre::String name, bool globalPool)
 	_RGM->createResourceGroup(name, globalPool);
 }
 
+void OgreManager::removeResourceGroup(Ogre::String name)
+{
+	_RGM->destroyResourceGroup(name);
+}
+
 void OgreManager::addResourceLocation(Ogre::String location, Ogre::String type, Ogre::String group, bool recursive)
 {
 	_RGM->addResourceLocation(location, type, group, recursive);
@@ -211,13 +216,4 @@ bool OgreManager::ceguiInit()
 	CEGUI::MouseCursor::getSingleton().setImage( CEGUI::System::getSingleton().getDefaultMouseCursor());
 
 	return true;
-}
-
-void OgreManager::attachCamera(Ogre::SceneNode* Node)
-{
-	if(_Camera)
-	{
-		_Camera->setPosition(Node->getPosition());
-		Node->attachObject(_Camera);
-	}
 }

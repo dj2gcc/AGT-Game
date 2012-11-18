@@ -2,6 +2,7 @@
 
 #include "OgreManager.h"
 #include "OgreInputManager.h"
+#include "TerrainManager.h"
 #include "Interface.h"
 
 #include <CEGUI.h>
@@ -9,15 +10,27 @@
 
 #include<string>
 
+#include "World.h"
+
 
 class GamePlay : public Interface
 {
 private:
 
+	OIS::KeyCode _Up;
+	OIS::KeyCode _Down;
+	OIS::KeyCode _Left;
+	OIS::KeyCode _Right;
+	OIS::KeyCode _LeftSide;
+	OIS::KeyCode _RightSide;
+	OIS::KeyCode _Jump;
+
 	OgreManager* _OgreManager;
 
 	CEGUI::Window* _CEGUISheet;
 	CEGUI::Window* _QuitButton;
+
+	World* _World;
 
 public:
 

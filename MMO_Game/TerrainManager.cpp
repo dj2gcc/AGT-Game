@@ -1,7 +1,5 @@
 #include "TerrainManager.h"
 
-TerrainManager* TerrainManager::_Instance = NULL;
-
 TerrainManager::TerrainManager()
 {
 }
@@ -12,36 +10,51 @@ TerrainManager::~TerrainManager()
 
 TerrainManager* TerrainManager::Instance()
 {
+	static TerrainManager _Instance;
+
+	return &_Instance;
 }
 
 void TerrainManager::terrainInit(Ogre::String file, OgreManager* o)
 {
 	_OgreManager = o;
-	_TerrainGlobalOptions = new Ogre::TerrainGlobalOptions();
 
-	_TerrainGroup = new Ogre::TerrainGroup(_OgreManager->getSceneManager(), Ogre::Terrain::ALIGN_X_Z, 513, 12000.0f);
+	Ogre::Vector3 lightdir(0.55, -0.3, 0.75);
+	lightdir.normalise();
+
+	Ogre::Light* light = _OgreManager->getSceneManager()->createLight("GameLight");
+	light->setType(Ogre::Light::LT_DIRECTIONAL);
+	light->setDirection(lightdir);
+	light->setDiffuseColour(Ogre::ColourValue::White);
+	light->setSpecularColour(Ogre::ColourValue(0.4, 0.4, 0.4));
+
+	_OgreManager->getSceneManager()->setAmbientLight(Ogre::ColourValue(0.2, 0.2, 0.2));
+	
+	_TerrainGlobalOptions = OGRE_NEW Ogre::TerrainGlobalOptions();
+
+	_TerrainGroup = OGRE_NEW Ogre::TerrainGroup(_OgreManager->getSceneManager(), Ogre::Terrain::ALIGN_X_Z, 513, 12000.0f);
 	_TerrainGroup->setFilenameConvention(Ogre::String("GameTerrain"), Ogre::String("dat"));
 	_TerrainGroup->setOrigin(Ogre::Vector3::ZERO);
 
 	//Config Terrain start
 	_TerrainGlobalOptions->setMaxPixelError(8);
 	_TerrainGlobalOptions->setCompositeMapDistance(3000);
-	//lTerrainGlobalOptions->setLightMapDirection(light->getDerivedDirection());
-//	lTerrainGlobalOptions->setCompositeMapAmbient(lScene->getAmbientLight());
-	//lTerrainGlobalOptions->setCompositeMapDiffuse(light->getDiffuseColour());
+
+	_TerrainGlobalOptions->setLightMapDirection(light->getDerivedDirection());
+	_TerrainGlobalOptions->setCompositeMapAmbient(_OgreManager->getSceneManager()->getAmbientLight());
+	_TerrainGlobalOptions->setCompositeMapDiffuse(light->getDiffuseColour());
 
 	Ogre::Terrain::ImportData& defaultimp = _TerrainGroup->getDefaultImportSettings();
 	defaultimp.terrainSize = 513;
 	defaultimp.worldSize = 12000.0f;
 	defaultimp.inputScale = 600;
-	//defaultimp.inputBias = 100;
 	defaultimp.minBatchSize = 33;
 	defaultimp.maxBatchSize = 65;
 
 	defaultimp.layerList.resize(3);
 	defaultimp.layerList[0].worldSize = 100;
-	defaultimp.layerList[0].textureNames.push_back("dirt_gravyrocky_diffusespecular.dds");
-	defaultimp.layerList[0].textureNames.push_back("dirt_gravyrocky_normalheight.dds");
+	defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_diffusespecular.dds");
+	defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_normalheight.dds");
 	defaultimp.layerList[1].worldSize = 30;
 	defaultimp.layerList[1].textureNames.push_back("grass_green-01_diffusespecular.dds");
 	defaultimp.layerList[1].textureNames.push_back("grass_green-01_normalheight.dds");
@@ -57,21 +70,23 @@ void TerrainManager::terrainInit(Ogre::String file, OgreManager* o)
 		{
 			//Define terrain function
 			 Ogre::String filename = _TerrainGroup->generateFilename(x, y);
-			if (Ogre::ResourceGroupManager::getSingleton().resourceExists(lTerrainGroup->getResourceGroup(), filename))
+			if (Ogre::ResourceGroupManager::getSingleton().resourceExists(_TerrainGroup->getResourceGroup(), filename))
 			{
-				lTerrainGroup->defineTerrain(x, y);
+				_TerrainGroup->defineTerrain(x, y);
 			}
 			else
 			{
 				Ogre::Image img;
 				//Get terrain image
-				img.load(file, Ogre::String("GameResources"));
+				Ogre::String tempFile = Ogre::StringConverter::toString(x * 10 + y);
+				tempFile.append(".png");
+				img.load("00.png", Ogre::String("GameResources"));
 					if (x % 2 != 0)
 						img.flipAroundY();
 					if (y % 2 != 0)
 						img.flipAroundX();
 				//Get terrain image end
-				lTerrainGroup->defineTerrain(x, y, &img);
+				_TerrainGroup->defineTerrain(x, y, &img);
 				lTerrainsImported = true;
 			}
 			//Define terrain function end
@@ -121,9 +136,20 @@ void TerrainManager::terrainInit(Ogre::String file, OgreManager* o)
     }
 
 	_TerrainGroup->freeTemporaryResources();
+
+	_OgreManager->getSceneManager()->setSkyBox(true, "Examples/EarlyMorningSkyBox", 5000, true, Ogre::Quaternion::IDENTITY, "GameResources");
 }
 
-Ogre::ManualObject* TerrainManager::createTerrainDecal(Ogre::String& name, Ogre::String& material, Ogre::String& resourceGroup = Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME)
+void TerrainManager::clearTerrainManager()
+{
+	_TerrainGroup->removeAllTerrains();
+	OgreManager::Instance()->getSceneManager()->destroyLight("GameLight");
+	OgreManager::Instance()->getSceneManager()->setSkyBox(false, "");
+	OGRE_DELETE _TerrainGroup;
+	OGRE_DELETE _TerrainGlobalOptions;
+}
+
+Ogre::ManualObject* TerrainManager::createTerrainDecal(Ogre::String& name, Ogre::String& material, Ogre::String& resourceGroup)
 {
 	if(!_OgreManager)
 		return NULL;

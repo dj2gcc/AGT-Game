@@ -1,18 +1,13 @@
 #include "OgreManager.h"
 #include "GameStateManager.h"
 
-OgreInputManager* OgreInputManager::_Instance = NULL;
 Interface* OgreInputManager::_Interface = NULL;
 
 OgreInputManager* OgreInputManager::Instance()
 {
-	if(!_Instance)
-	{
-		_Instance = new OgreInputManager();
-		_Instance->initInput(OgreManager::Instance()->getWindow());
-	}
+	static OgreInputManager _Instance;
 
-	return _Instance;
+	return &_Instance;
 }
 
 void OgreInputManager::setInterface(Interface* i)
@@ -26,12 +21,11 @@ OgreInputManager::OgreInputManager()
 
 OgreInputManager::~OgreInputManager()
 {
-	Ogre::LogManager::getSingleton().logMessage("End of InputManager");
-	//system("pause");
 }
 
 bool OgreInputManager::initInput(Ogre::RenderWindow* window)
 {
+
 	OIS::ParamList pl;
 
 	size_t windowHnd = 0;
@@ -182,9 +176,6 @@ void OgreInputManager::destroyInputManager()
             _InputManager->destroyInputObject(_Keyboard);
             _Keyboard = NULL;
         }
- 
-		/*delete _Instance;
-		_Instance = NULL;*/
 
         _InputManager->destroyInputSystem(_InputManager);
         _InputManager = NULL;

@@ -22,6 +22,9 @@
     <Filter Include="SDKs">
       <UniqueIdentifier>{966435c7-bdf3-454e-8c77-3f7af61d2e0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameData">
+      <UniqueIdentifier>{49049a82-d06b-42e1-a7c7-896532cb3008}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -47,6 +50,18 @@
     </ClCompile>
     <ClCompile Include="TerrainManager.cpp">
       <Filter>SDKs</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>GameData</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveableObject.cpp">
+      <Filter>GameData</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>GameData</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsObject.cpp">
+      <Filter>GameData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +97,24 @@
     </ClInclude>
     <ClInclude Include="TerrainManager.h">
       <Filter>SDKs</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticObject.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveableObject.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsObject.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObject.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>GameData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

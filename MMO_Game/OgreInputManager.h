@@ -19,13 +19,9 @@ private:
 
 	static Interface* _Interface;
 
-	static OgreInputManager* _Instance;
-
 	OIS::InputManager* _InputManager;
 	OIS::Mouse* _Mouse;
 	OIS::Keyboard* _Keyboard;
-
-	bool initInput(Ogre::RenderWindow* window);
 
 	//Ogre::WindowListener
 	bool windowClosing(Ogre::RenderWindow* rw);
@@ -45,6 +41,8 @@ private:
 	bool mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id );
 
 public:
+
+	bool initInput(Ogre::RenderWindow* window);
 
 	static OgreInputManager* Instance();
 

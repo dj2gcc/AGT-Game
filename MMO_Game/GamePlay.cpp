@@ -17,6 +17,22 @@ GamePlay::~GamePlay()
 
 bool GamePlay::gameplayInit()
 {
+	//Resource Group Init
+		_OgreManager->addResourceGroup(Ogre::String("GameResources"), false);
+
+		char buffer[MAX_PATH]; 
+		GetModuleFileName( NULL, buffer, MAX_PATH ); 
+		std::string::size_type pos = std::string( buffer ).find_last_of( "\\/" ); 
+		std::string s = std::string( buffer ).substr( 0, pos); 
+
+		_OgreManager->addResourceLocation(Ogre::String(s + "\\Resources\\"), Ogre::String("FileSystem"), Ogre::String("GameResources"), false);
+		_OgreManager->getRgm()->initialiseResourceGroup(Ogre::String("GameResources"));
+	//Resource Group Init End
+
+	//Terrain Init
+		TerrainManager::Instance()->terrainInit(Ogre::String("terrain.png"), _OgreManager);
+	//Terrain Init end
+
 	//CEGUI Init
 		if(!_OgreManager->getCEGUIStatus())
 		{
@@ -29,7 +45,7 @@ bool GamePlay::gameplayInit()
 		}		
 	//CEGUI Init end
 
-	//Create Menu
+	//Create gui
 		CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
 		_CEGUISheet = wmgr.createWindow("DefaultWindow", "OgreGame/MainSheet");
 
@@ -40,8 +56,28 @@ bool GamePlay::gameplayInit()
 		_QuitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GamePlay::CEGUIEventQuit, this));
 		_CEGUISheet->addChildWindow(_QuitButton);
 
+		_QuitButton->hide();
+
 		CEGUI::System::getSingleton().setGUISheet(_CEGUISheet);
-	//Create Menu end
+	//Create gui end
+
+	//Init control settings
+		_Up = OIS::KC_W;
+		_Down = OIS::KC_S;
+		_Left = OIS::KC_A;
+		_Right = OIS::KC_D;
+		_LeftSide = OIS::KC_Q;
+		_RightSide = OIS::KC_E;
+		_Jump = OIS::KC_SPACE;
+
+	//Init control settings end
+
+	//Initialise world data
+
+		_World = new World();
+
+		_World->populate();
+	//Initialise world data end
 
 	_OgreManager->getRoot()->clearEventTimes();
 	return true;
@@ -50,6 +86,11 @@ bool GamePlay::gameplayInit()
 void GamePlay::cleanUp()
 {
 	CEGUI::WindowManager::getSingleton().destroyAllWindows();
+	_OgreManager->removeResourceGroup("GameResources");
+	TerrainManager::Instance()->clearTerrainManager();
+
+	delete _World;
+
 }
 
 void GamePlay::update()
@@ -80,6 +121,8 @@ bool GamePlay::frameRenderingQueued(const Ogre::FrameEvent& evt )
 
 	CEGUI::System::getSingleton().injectTimePulse(evt.timeSinceLastFrame);
 
+	_World->update(evt.timeSinceLastFrame);
+
 	return true;
 }
 
@@ -89,12 +132,77 @@ bool GamePlay::keyPressed( const OIS::KeyEvent& evt )
 	CEGUI::System &sys = CEGUI::System::getSingleton();
 	sys.injectKeyDown(evt.key);
 	sys.injectChar(evt.text);
+
+	if(evt.key == _Up)
+	{
+		_World->getInControl()->MoveUp();
+	}else
+		if(evt.key == _Down)
+		{
+			_World->getInControl()->MoveDown();
+		}else
+			if(evt.key == _Left)
+			{
+				_World->getInControl()->MoveLeft();
+			}else
+				if(evt.key == _Right)
+				{
+					_World->getInControl()->MoveRight();
+				}else
+					if(evt.key == _LeftSide)
+					{
+						_World->getInControl()->MoveLeftSide();
+					}else
+						if(evt.key == _RightSide)
+						{
+							_World->getInControl()->MoveRightSide();
+						}else
+							if(evt.key == _Jump)
+							{
+								_World->getInControl()->Jump();
+							}else
+								if(evt.key == OIS::KC_ESCAPE)
+								{
+									if(_QuitButton->isVisible())
+									{
+										_QuitButton->hide();
+									}else
+									{
+										_QuitButton->setVisible(true);
+									}
+								}
+
 	return true;
 }
 
 bool GamePlay::keyReleased( const OIS::KeyEvent& evt )
 {
 	CEGUI::System::getSingleton().injectKeyUp(evt.key);
+	if(evt.key == _Up)
+	{
+		_World->getInControl()->MoveUp();
+	}else
+		if(evt.key == _Down)
+		{
+			_World->getInControl()->MoveDown();
+		}else
+			if(evt.key == _Left)
+			{
+				_World->getInControl()->MoveLeft();
+			}else
+				if(evt.key == _Right)
+				{
+					_World->getInControl()->MoveRight();
+				}else
+					if(evt.key == _LeftSide)
+					{
+						_World->getInControl()->MoveLeftSide();
+					}else
+						if(evt.key == _RightSide)
+						{
+							_World->getInControl()->MoveRightSide();
+						}
+
 	return true;
 }
 
