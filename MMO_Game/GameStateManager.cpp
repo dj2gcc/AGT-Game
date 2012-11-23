@@ -27,6 +27,9 @@ GameStateManager::~GameStateManager()
 	if(_MainMenu)
 		delete _MainMenu;
 
+	if(_MapEditor)
+		delete _MapEditor;
+
 	_OgreManager->destroyOgreManager();
 	
 }

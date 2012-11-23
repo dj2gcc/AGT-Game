@@ -19,7 +19,7 @@ MoveableObject::MoveableObject() : Object()
 
 MoveableObject::MoveableObject(Ogre::String mesh) : Object()
 {
-	_Body = OgreManager::Instance()->getSceneManager()->createEntity(Ogre::StringConverter::toString(Object::_ID) + "Body", mesh);
+	_Body = OgreManager::Instance()->getSceneManager()->createEntity((Ogre::StringConverter::toString(this->getID()) + "Body"), mesh);
 	
 	_Body->getSkeleton()->setBlendMode(Ogre::SkeletonAnimationBlendMode::ANIMBLEND_CUMULATIVE);
 	_AnimStateTop = _Body->getAnimationState("IdleTop");

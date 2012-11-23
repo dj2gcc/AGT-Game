@@ -79,8 +79,8 @@ void TerrainManager::terrainInit(Ogre::String file, OgreManager* o)
 				Ogre::Image img;
 				//Get terrain image
 				Ogre::String tempFile = Ogre::StringConverter::toString(x * 10 + y);
-				tempFile.append(".png");
-				img.load("00.png", Ogre::String("GameResources"));
+				tempFile.append(".bmp");
+				img.load("00.bmp", Ogre::String("GameResources"));
 					if (x % 2 != 0)
 						img.flipAroundY();
 					if (y % 2 != 0)

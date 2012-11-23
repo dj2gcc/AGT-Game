@@ -5,10 +5,12 @@
 #include "Interface.h"
 #include "MainMenu.h"
 #include "GamePlay.h"
+#include "MapEditor.h"
 #include "GameStates.h"
 
 #define MenuState GameStateMenu::Instance()
 #define PlayState GameStatePlay::Instance()
+#define EditState GameStateEditor::Instance()
 #define CleanupState GameStateCleanup::Instance()
 #define StartState GameStateStart::Instance()
 #define LoadingState GameStateLoading::Instance()
@@ -28,6 +30,8 @@ private:
 	MainMenu* _MainMenu;
 
 	GamePlay* _GamePlay;
+
+	MapEditor* _MapEditor;
 
 	GameState* _PreviousState;
 	GameState* _CurrentState;
@@ -52,6 +56,7 @@ public:
 	friend class GameStateCleanup;
 	friend class GameStatePlay;
 	friend class GameStateMenu;
+	friend class GameStateEditor;
 };
 
 extern GameStateManager _GameStateManager;

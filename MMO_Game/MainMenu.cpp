@@ -47,6 +47,13 @@ bool MainMenu::menuInit()
 		_QuitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainMenu::CEGUIEventQuit, this));
 		_CEGUISheet->addChildWindow(_QuitButton);
 
+		_EditButton = wmgr.createWindow("TaharezLook/Button", "OgreGame/MainSheet/EditButton");
+		_EditButton->setSize(CEGUI::UVector2(CEGUI::UDim(0.1, 0), CEGUI::UDim(0.05, 0)));
+		_EditButton->setPosition(CEGUI::UVector2(CEGUI::UDim(0.45, 0) ,CEGUI::UDim(0.6, 0)));
+		_EditButton->setText("Edit");
+		_EditButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainMenu::CEGUIEventEdit, this));
+		_CEGUISheet->addChildWindow(_EditButton);
+
 		CEGUI::System::getSingleton().setGUISheet(_CEGUISheet);
 	//Create Menu end
 
@@ -138,6 +145,13 @@ bool MainMenu::CEGUIEventPlay(const CEGUI::EventArgs& arg)
 bool MainMenu::CEGUIEventQuit(const CEGUI::EventArgs& arg)
 {
 	StateManager.ChangeState(CleanupState);
+
+	return true;
+}
+
+bool MainMenu::CEGUIEventEdit(const CEGUI::EventArgs& arg)
+{
+	StateManager.ChangeState(EditState);
 
 	return true;
 }

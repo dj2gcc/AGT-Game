@@ -1,3 +1,5 @@
+#pragma once 
+
 #include "MoveableObject.h"
 
 class PhysicsObject : public MoveableObject

@@ -1,6 +1,6 @@
 #include "Object.h"
 
-int Object::_NextID = 0;
+int Object::_NextID = 1;
 
 Object::Object()
 {
@@ -11,5 +11,4 @@ Object::Object()
 
 Object::~Object()
 {
-	_NextID = 0;
 }

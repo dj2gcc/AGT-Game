@@ -18,6 +18,7 @@ private:
 
 	CEGUI::Window* _CEGUISheet;
 	CEGUI::Window* _PlayButton;
+	CEGUI::Window* _EditButton;
 	CEGUI::Window* _QuitButton;
 
 public:
@@ -34,6 +35,7 @@ public:
 
 	bool CEGUIEventPlay(const CEGUI::EventArgs& arg);
 	bool CEGUIEventQuit(const CEGUI::EventArgs& arg);
+	bool CEGUIEventEdit(const CEGUI::EventArgs& arg);
 
 	//Ogre::WindowListener
 	void windowClosed(Ogre::RenderWindow* rw);

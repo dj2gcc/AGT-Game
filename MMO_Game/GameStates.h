@@ -111,3 +111,30 @@ public:
 	virtual void Exit(GameStateManager* manager);
 
 };
+
+//MapEditor State
+//
+//
+
+class GameStateEditor : public GameState
+{
+private:
+
+	GameStateEditor(){}
+
+	GameStateEditor(const GameStateEditor&);
+	GameStateEditor& operator=(const GameStateEditor&);
+
+public:
+
+	~GameStateEditor(){}
+
+	static GameStateEditor* Instance();
+
+	virtual void Enter(GameStateManager* manager);
+
+	virtual void Execute(GameStateManager* manager);
+
+	virtual void Exit(GameStateManager* manager);
+
+};

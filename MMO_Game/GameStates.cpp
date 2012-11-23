@@ -3,6 +3,7 @@
 
 #define mainmenu manager->_MainMenu
 #define gameplay manager->_GamePlay
+#define mapeditor manager->_MapEditor
 #define ogremanager manager->getOgreManager()
 
 //Start State functions
@@ -125,4 +126,35 @@ void GameStatePlay::Execute(GameStateManager* manager)
 void GameStatePlay::Exit(GameStateManager* manager)
 {
 	gameplay->cleanUp();
+}
+
+//MapEditor State functions
+//
+//
+
+GameStateEditor* GameStateEditor::Instance()
+{
+  static GameStateEditor instance;
+
+  return &instance;
+}
+
+void GameStateEditor::Enter(GameStateManager* manager)
+{
+	if(!mapeditor)
+		mapeditor = new MapEditor();
+
+	
+	mapeditor->mapeditorInit();
+	manager->_InputManager->setInterface(mapeditor);
+}
+
+void GameStateEditor::Execute(GameStateManager* manager)
+{
+	mapeditor->update();
+}
+
+void GameStateEditor::Exit(GameStateManager* manager)
+{
+	mapeditor->cleanUp();
 }

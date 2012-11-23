@@ -91,6 +91,7 @@
     <ClCompile Include="GameStates.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MapEditor.cpp" />
     <ClCompile Include="MoveableObject.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="OgreInputManager.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="GameStates.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MapEditor.h" />
     <ClInclude Include="MoveableObject.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="OgreInputManager.h" />
