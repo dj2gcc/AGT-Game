@@ -69,7 +69,7 @@ bool CombatFunctionality::receiveEffect(ApplicationMethodBase* effect)
 
 bool CombatFunctionality::castEffect(std::string name)
 {
-	if(!_Casting)
+	if(!_Casting && _Parent->_Target)
 	{
 		for(_sb = _SkillBook.begin(); _sb != _SkillBook.end(); _sb++)
 		{
@@ -127,12 +127,19 @@ void CombatFunctionality::update(float tslf)
 {
 	if(_Casting)
 	{
-		_CastProgress += tslf;
-
-		if(_CastProgress >= _Casting->getSkill()->getCast())
+		if(_Parent->_Target)
 		{
-			_Parent->setAdditionalAnimation(Attack2, Overlaping);
-			Dispatch->DispatchMessageA(0, _Parent->getID(), _Parent->_Target->getID(), "Combat", _Casting);
+			_CastProgress += tslf;
+
+			if(_CastProgress >= _Casting->getSkill()->getCast())
+			{
+				_Parent->setAdditionalAnimation(Attack2, Overlaping);
+				Dispatch->DispatchMessageA(0, _Parent->getID(), _Parent->_Target->getID(), "Combat", _Casting);
+				_Casting = NULL;
+				_CastProgress = 0;
+			}
+		}else
+		{
 			_Casting = NULL;
 			_CastProgress = 0;
 		}

@@ -51,6 +51,8 @@ public:
 	bool addSkill(int slot);
 	bool removeSkill(int slot);
 
+	void showTarget(bool show);
+
 	void displayWindow(CEGUI::Window* window);
 	bool isWindowDisplayed(CEGUI::String name);
 

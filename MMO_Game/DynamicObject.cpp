@@ -52,7 +52,7 @@ DynamicObject::DynamicObject(Ogre::String model) : Object()
 	_States._Attack2 = "SliceVertical";
 
 	_ID = IDManager->newCharacterID();
-	_Body = OgreManager::Instance()->getSceneManager()->createEntity((Ogre::StringConverter::toString(_ID) + "Body"), model);
+	_Body = OgreManager::Instance()->getSceneManager()->createEntity(("B" + Ogre::StringConverter::toString(_ID)), model);
 	
 	_Body->getSkeleton()->setBlendMode(Ogre::SkeletonAnimationBlendMode::ANIMBLEND_CUMULATIVE);
 

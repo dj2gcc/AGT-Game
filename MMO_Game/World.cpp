@@ -19,7 +19,6 @@ void World::populate()
 
 	_Population.push_back(new Character("sinbad.mesh", "Enemy"));
 
-	_Population.at(0)->_Target = _Population.at(1);
 	_Population.at(0)->getCombat()->learnSpell(new Attack());
 	_Population.at(0)->getCombat()->learnSpell(new Pain());
 	_Population.at(0)->getCombat()->learnSpell(new Heal());

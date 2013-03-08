@@ -235,7 +235,47 @@ bool GamePlay::mouseMoved( const OIS::MouseEvent& evt )
 
 bool GamePlay::mousePressed( const OIS::MouseEvent& evt, OIS::MouseButtonID id )
 {
-	CEGUI::System::getSingleton().injectMouseButtonDown(OgreInputManager::Instance()->convertButton(id));
+	CEGUI::System &sys = CEGUI::System::getSingleton();
+	sys.injectMouseButtonDown(OgreInputManager::Instance()->convertButton(id));
+
+	if(id == 0 && sys.getWindowContainingMouse() == _CEGUISheet)
+	{
+		CEGUI::Point mousePos = CEGUI::MouseCursor::getSingleton().getPosition();
+
+		//then send a raycast straight out from the camera at the mouse's position
+		Ogre::Ray mouseRay = _OgreManager->getCamera()->getCameraToViewportRay(mousePos.d_x/float(evt.state.width), mousePos.d_y/float(evt.state.height));
+	
+		Ogre::RaySceneQuery* mRayScnQuery;
+
+		mRayScnQuery = _OgreManager->getSceneManager()->createRayQuery(Ogre::Ray());
+
+		mRayScnQuery->setRay(mouseRay);
+
+		Ogre::RaySceneQueryResult& result = mRayScnQuery->execute();
+		Ogre::RaySceneQueryResult::iterator iter = result.begin();
+
+		bool hit = false;
+
+		for(iter; iter != result.end(); iter++)
+		{
+			if(iter->movable && iter->movable->getName() != "" && iter->movable->getName().at(0) == 'B')
+			{
+				std::string id = iter->movable->getName();
+				id.erase(0,1);
+
+				_World->getPlayer()->_Target = _World->getCharacter(atoi(id.c_str()));
+				GUI->showTarget(true);
+
+				hit = true;
+			}
+		}
+
+		if(!hit)
+		{
+			_World->getPlayer()->_Target = NULL;
+			GUI->showTarget(false);
+		}
+	}
 	return true;
 }
 
