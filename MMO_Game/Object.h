@@ -1,15 +1,13 @@
 #pragma once
 
 #include "OgreManager.h"
-#include "TerrainManager.h"
+#include "IdManager.h"
+
 
 class Object
 {
 protected:
-	static int _NextID;
-
 	int _ID;
-
 public:
 	Object();
 	virtual ~Object();

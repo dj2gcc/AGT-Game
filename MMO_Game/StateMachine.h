@@ -1,4 +1,4 @@
-#include "State.h"
+#include "States.h"
 
 template <class object_type>
 
@@ -8,30 +8,35 @@ private:
 
 	object_type* _Owner;
 
-	State<object_type*> _CurrentState;
+	StateBase<object_type>* _CurrentState;
 
-	State<object_type*> _PreviousState;
+	StateBase<object_type>* _PreviousState;
 
-	State<object_type*> _GlobalState;
+	StateBase<object_type>* _GlobalState;
 
 public:
 
-	StateMachine(object_type* owner):_Owner(owner), _CurrentState(NULL), _PreviousState(NULL), _GlobalState(NULL) {}
-
-	void SetCurrentState(State<object_type*> s) {_CurrentState = s;}
-	void SetPreviousState(State<object_type*> s) {_PreviousState = s;}
-	void SetGlobalState(State<object_type*> s) {_GlobalState = s;}
-
-	void Update()const
+	StateMachine(object_type* owner):_Owner(owner)
 	{
-		if(_GlobalState)
-			_GlobalState->Execute(_Owner);
-
-		if(_CurrentState)
-			_CurrentState->Execute(_Owner);
+		_CurrentState = NULL;
+		_PreviousState = NULL;
+		_GlobalState = NULL;
 	}
 
-	void ChangeState(State<object_type>* newState)
+	void SetCurrentState(StateBase<object_type>* s) {_CurrentState = s;}
+	void SetPreviousState(StateBase<object_type>* s) {_PreviousState = s;}
+	void SetGlobalState(StateBase<object_type>* s) {_GlobalState = s;}
+
+	void Update(float tslf)const
+	{
+		if(_GlobalState)
+			_GlobalState->Execute(_Owner, tslf);
+
+		if(_CurrentState)
+			_CurrentState->Execute(_Owner, tslf);
+	}
+
+	void ChangeState(StateBase<object_type>* newState)
 	{
 		assert(newState && "<StateMachine::ChangeState>: Trying to change to a null state");
 
@@ -44,7 +49,7 @@ public:
 		_CurrentState->Enter(_Owner);
 	}
 
-	State<object_type>* CurrentState() const{ return _CurrentState; }
-	State<object_type>* PreviousState() const{ return _PreviousState; }
-	State<object_type>* GlobalState() const{ return _GlobalState; }
+	StateBase<object_type>* CurrentState() const{ return _CurrentState; }
+	StateBase<object_type>* PreviousState() const{ return _PreviousState; }
+	StateBase<object_type>* GlobalState() const{ return _GlobalState; }
 };

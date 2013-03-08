@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="StateMachine">
-      <UniqueIdentifier>{19642e08-b00c-40e3-848e-2934f4781764}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameStateManager">
       <UniqueIdentifier>{1ab6d2f8-3fdb-4989-be37-582c36aeaebd}</UniqueIdentifier>
     </Filter>
@@ -24,6 +21,9 @@
     </Filter>
     <Filter Include="GameData">
       <UniqueIdentifier>{49049a82-d06b-42e1-a7c7-896532cb3008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{92234639-75fe-4ca0-9f61-bebfdb4a24eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,28 +54,55 @@
     <ClCompile Include="Object.cpp">
       <Filter>GameData</Filter>
     </ClCompile>
-    <ClCompile Include="MoveableObject.cpp">
-      <Filter>GameData</Filter>
-    </ClCompile>
     <ClCompile Include="World.cpp">
-      <Filter>GameData</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsObject.cpp">
       <Filter>GameData</Filter>
     </ClCompile>
     <ClCompile Include="MapEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SteeringBehaviours.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>GameData</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicObject.cpp">
+      <Filter>GameData</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageDispatcher.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStates.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CombatFunctionality.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillList.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationMethods.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticObject.cpp">
+      <Filter>GameData</Filter>
+    </ClCompile>
+    <ClCompile Include="Equipment.cpp">
+      <Filter>GameData</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>GameData</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIRenderer.cpp">
+      <Filter>GameData</Filter>
+    </ClCompile>
+    <ClCompile Include="States.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>StateMachine</Filter>
-    </ClInclude>
-    <ClInclude Include="StateMachine.h">
-      <Filter>StateMachine</Filter>
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>GameStateManager</Filter>
@@ -104,23 +131,77 @@
     <ClInclude Include="Object.h">
       <Filter>GameData</Filter>
     </ClInclude>
-    <ClInclude Include="StaticObject.h">
-      <Filter>GameData</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveableObject.h">
-      <Filter>GameData</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsObject.h">
-      <Filter>GameData</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerObject.h">
-      <Filter>GameData</Filter>
-    </ClInclude>
     <ClInclude Include="World.h">
       <Filter>GameData</Filter>
     </ClInclude>
     <ClInclude Include="MapEditor.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PageListener.h">
+      <Filter>SDKs</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringBehaviours.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Telegram.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageDispatcher.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicObject.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Clock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStates.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="StateBase.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatFunctionality.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationMethodBase.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationMethods.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillBase.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillList.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticObject.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="Equipment.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="IdManager.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIRenderer.h">
+      <Filter>GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="States.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

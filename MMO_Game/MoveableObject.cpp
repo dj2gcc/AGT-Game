@@ -9,8 +9,8 @@ MoveableObject::MoveableObject() : Object()
 
 	_MoveUp = false;
 	_MoveDown = false;
-	_MoveLeft = false; 
-	_MoveRight = false;
+	_RotateLeft = false; 
+	_RotateRight = false;
 	_MoveLeftSide = false;
 	_MoveRightSide = false;
 
@@ -19,7 +19,7 @@ MoveableObject::MoveableObject() : Object()
 
 MoveableObject::MoveableObject(Ogre::String mesh) : Object()
 {
-	_Body = OgreManager::Instance()->getSceneManager()->createEntity((Ogre::StringConverter::toString(this->getID()) + "Body"), mesh);
+	_Body = OgreManager::Instance()->getSceneManager()->createEntity((Ogre::StringConverter::toString(_ID) + "Body"), mesh);
 	
 	_Body->getSkeleton()->setBlendMode(Ogre::SkeletonAnimationBlendMode::ANIMBLEND_CUMULATIVE);
 	_AnimStateTop = _Body->getAnimationState("IdleTop");
@@ -30,7 +30,7 @@ MoveableObject::MoveableObject(Ogre::String mesh) : Object()
 	_AnimStateTop->setEnabled(true);
 	_AnimStateBot->setEnabled(true);
 
-	_BodyNode = OgreManager::Instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(Ogre::StringConverter::toString(Object::_ID) + "Node", Ogre::Vector3(500, 200, 500));
+	_BodyNode = OgreManager::Instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(Ogre::StringConverter::toString(_ID) + "Node", Ogre::Vector3(500, 200, 500));
 	_ChaseNode = _BodyNode->createChildSceneNode(_BodyNode->getName() + "Chase");
 	_BodyNode->attachObject(_Body);
 	_ChaseNode->translate(0, 10, -30, Ogre::Node::TS_PARENT);
@@ -39,12 +39,17 @@ MoveableObject::MoveableObject(Ogre::String mesh) : Object()
 
 	_MoveUp = false;
 	_MoveDown = false;
-	_MoveLeft = false; 
-	_MoveRight = false;
+	_RotateLeft = false; 
+	_RotateRight = false;
 	_MoveLeftSide = false;
 	_MoveRightSide = false;
 
 	_Height = _Body->getBoundingRadius();
+
+	_Orientation.position = _BodyNode->getPosition();
+	_Orientation.facing = Ogre::Vector3(1, _Orientation.position.y, 0);
+
+	_LocalTimer = 0;
 }
 
 MoveableObject::~MoveableObject()
@@ -183,4 +188,41 @@ void MoveableObject::update(Ogre::Real tslf)
 	}
 
 	_BodyNode->setPosition(_BodyNode->getPosition().x, TerrainManager::Instance()->getTerrainHeight(_BodyNode->getPosition().x, _BodyNode->getPosition().z) + _Height, _BodyNode->getPosition().z);
+}
+
+void MoveableObject::aiupdate(Ogre::Real tslf)
+{
+	_LocalTimer += tslf;
+
+	if(_LocalTimer >= 0)
+	{
+		if(_AnimStateTop->getAnimationName() != "RunTop")
+		{
+			_AnimStateTop->setEnabled(false);
+			_AnimStateBot->setEnabled(false); 
+
+			_AnimStateTop = _Body->getAnimationState("RunTop");
+			_AnimStateBot = _Body->getAnimationState("RunBase");
+
+			_AnimStateTop->setLoop(true);
+			_AnimStateBot->setLoop(true);
+			_AnimStateTop->setEnabled(true);
+			_AnimStateBot->setEnabled(true);
+		}
+		_Steering->steer(_Orientation);
+
+		_BodyNode->setDirection(_Orientation.facing, Ogre::Node::TS_LOCAL);
+
+		_LocalTimer = 0;
+	}
+	
+	_BodyNode->translate(0, 0, 100 * tslf, Ogre::Node::TS_LOCAL);
+
+	_BodyNode->setPosition(_BodyNode->getPosition().x, TerrainManager::Instance()->getTerrainHeight(_BodyNode->getPosition().x, _BodyNode->getPosition().z) + _Height, _BodyNode->getPosition().z);
+
+	if(_AnimStateTop)
+	{
+		_AnimStateTop->addTime(tslf);
+		_AnimStateBot->addTime(tslf);
+	}
 }

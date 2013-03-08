@@ -69,17 +69,25 @@ bool GamePlay::gameplayInit()
 		_LeftSide = OIS::KC_Q;
 		_RightSide = OIS::KC_E;
 		_Jump = OIS::KC_SPACE;
+		_Inventory = OIS::KC_B;
 
 	//Init control settings end
 
 	//Initialise world data
 
-		_World = new World();
+		//_World = new World();
 
 		_World->populate();
 	//Initialise world data end
 
+	//Init GUI
+
+		GUI->initialise(_CEGUISheet, _World->getPlayer());
+
+	//Init GUI end
+
 	_OgreManager->getRoot()->clearEventTimes();
+
 	return true;
 }
 
@@ -89,7 +97,7 @@ void GamePlay::cleanUp()
 	_OgreManager->removeResourceGroup("GameResources");
 	TerrainManager::Instance()->clearTerrainManager();
 
-	delete _World;
+	_World->destroy();
 
 }
 
@@ -119,9 +127,13 @@ bool GamePlay::frameRenderingQueued(const Ogre::FrameEvent& evt )
 	if(_OgreManager->getWindow()->isClosed())
 		return false;
 
+	Time->update(evt.timeSinceLastFrame);
+
 	CEGUI::System::getSingleton().injectTimePulse(evt.timeSinceLastFrame);
 
 	_World->update(evt.timeSinceLastFrame);
+
+	GUI->update(evt.timeSinceLastFrame);
 
 	return true;
 }
@@ -143,11 +155,11 @@ bool GamePlay::keyPressed( const OIS::KeyEvent& evt )
 		}else
 			if(evt.key == _Left)
 			{
-				_World->getInControl()->MoveLeft();
+				_World->getInControl()->RotateLeft();
 			}else
 				if(evt.key == _Right)
 				{
-					_World->getInControl()->MoveRight();
+					_World->getInControl()->RotateRight();
 				}else
 					if(evt.key == _LeftSide)
 					{
@@ -161,16 +173,20 @@ bool GamePlay::keyPressed( const OIS::KeyEvent& evt )
 							{
 								_World->getInControl()->Jump();
 							}else
-								if(evt.key == OIS::KC_ESCAPE)
+								if(evt.key == _Inventory)
 								{
-									if(_QuitButton->isVisible())
+									_World->getPlayer()->getInventory()->showContent();
+								}else
+									if(evt.key == OIS::KC_ESCAPE)
 									{
-										_QuitButton->hide();
-									}else
-									{
-										_QuitButton->setVisible(true);
+										if(_QuitButton->isVisible())
+										{
+											_QuitButton->hide();
+										}else
+										{
+											_QuitButton->setVisible(true);
+										}
 									}
-								}
 
 	return true;
 }
@@ -188,11 +204,11 @@ bool GamePlay::keyReleased( const OIS::KeyEvent& evt )
 		}else
 			if(evt.key == _Left)
 			{
-				_World->getInControl()->MoveLeft();
+				_World->getInControl()->RotateLeft();
 			}else
 				if(evt.key == _Right)
 				{
-					_World->getInControl()->MoveRight();
+					_World->getInControl()->RotateRight();
 				}else
 					if(evt.key == _LeftSide)
 					{

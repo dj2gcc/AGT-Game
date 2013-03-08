@@ -15,37 +15,49 @@ TerrainManager* TerrainManager::Instance()
 	return &_Instance;
 }
 
-void TerrainManager::terrainInit(Ogre::String file, OgreManager* o)
+void TerrainManager::initialiseResources()
 {
-	_OgreManager = o;
+	_OgreManager->addResourceGroup(Ogre::String("TerrainResources"), false);
 
+	char buffer[MAX_PATH]; 
+	GetModuleFileName( NULL, buffer, MAX_PATH ); 
+	std::string::size_type pos = std::string( buffer ).find_last_of( "\\/" ); 
+	std::string s = std::string( buffer ).substr( 0, pos); 
+	
+	_OgreManager->addResourceLocation(Ogre::String(s + "\\Resources\\TerrainData\\"), Ogre::String("FileSystem"), Ogre::String("TerrainResources"), false);
+	_OgreManager->getRgm()->initialiseResourceGroup(Ogre::String("TerrainResources"));
+}
+
+void TerrainManager::createLight()
+{
 	Ogre::Vector3 lightdir(0.55, -0.3, 0.75);
 	lightdir.normalise();
 
-	Ogre::Light* light = _OgreManager->getSceneManager()->createLight("GameLight");
-	light->setType(Ogre::Light::LT_DIRECTIONAL);
-	light->setDirection(lightdir);
-	light->setDiffuseColour(Ogre::ColourValue::White);
-	light->setSpecularColour(Ogre::ColourValue(0.4, 0.4, 0.4));
+	_Light = _OgreManager->getSceneManager()->createLight("GameLight");
+	_Light->setType(Ogre::Light::LT_DIRECTIONAL);
+	_Light->setDirection(lightdir);
+	_Light->setDiffuseColour(Ogre::ColourValue::White);
+	_Light->setSpecularColour(Ogre::ColourValue(0.4, 0.4, 0.4));
 
 	_OgreManager->getSceneManager()->setAmbientLight(Ogre::ColourValue(0.2, 0.2, 0.2));
-	
+}
+
+void TerrainManager::setGlobalOptions()
+{
 	_TerrainGlobalOptions = OGRE_NEW Ogre::TerrainGlobalOptions();
 
-	_TerrainGroup = OGRE_NEW Ogre::TerrainGroup(_OgreManager->getSceneManager(), Ogre::Terrain::ALIGN_X_Z, 513, 12000.0f);
-	_TerrainGroup->setFilenameConvention(Ogre::String("GameTerrain"), Ogre::String("dat"));
-	_TerrainGroup->setOrigin(Ogre::Vector3::ZERO);
-
-	//Config Terrain start
 	_TerrainGlobalOptions->setMaxPixelError(8);
 	_TerrainGlobalOptions->setCompositeMapDistance(3000);
 
-	_TerrainGlobalOptions->setLightMapDirection(light->getDerivedDirection());
+	_TerrainGlobalOptions->setLightMapDirection(_Light->getDerivedDirection());
 	_TerrainGlobalOptions->setCompositeMapAmbient(_OgreManager->getSceneManager()->getAmbientLight());
-	_TerrainGlobalOptions->setCompositeMapDiffuse(light->getDiffuseColour());
+	_TerrainGlobalOptions->setCompositeMapDiffuse(_Light->getDiffuseColour());
+}
 
+void TerrainManager::setDefaultImportSettings()
+{
 	Ogre::Terrain::ImportData& defaultimp = _TerrainGroup->getDefaultImportSettings();
-	defaultimp.terrainSize = 513;
+	defaultimp.terrainSize = 512;
 	defaultimp.worldSize = 12000.0f;
 	defaultimp.inputScale = 600;
 	defaultimp.minBatchSize = 33;
@@ -61,7 +73,23 @@ void TerrainManager::terrainInit(Ogre::String file, OgreManager* o)
 	defaultimp.layerList[2].worldSize = 200;
 	defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
 	defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
-	//Config Terrain end
+}
+
+void TerrainManager::terrainInit(Ogre::String file, OgreManager* o)
+{
+	_OgreManager = o;
+
+	initialiseResources();
+
+	createLight();
+
+	setGlobalOptions();
+
+	_TerrainGroup = OGRE_NEW Ogre::TerrainGroup(_OgreManager->getSceneManager(), Ogre::Terrain::ALIGN_X_Z, 513, 12000.0f);
+	_TerrainGroup->setFilenameConvention(Ogre::String("GameTerrain"), Ogre::String("dat"));
+	_TerrainGroup->setOrigin(Ogre::Vector3::ZERO);
+
+	setDefaultImportSettings();
 
 	bool lTerrainsImported = false;
 	 for (long x = 0; x <= 0; ++x)
@@ -80,7 +108,7 @@ void TerrainManager::terrainInit(Ogre::String file, OgreManager* o)
 				//Get terrain image
 				Ogre::String tempFile = Ogre::StringConverter::toString(x * 10 + y);
 				tempFile.append(".bmp");
-				img.load("00.bmp", Ogre::String("GameResources"));
+				img.load("00.bmp", Ogre::String("TerrainResources"));
 					if (x % 2 != 0)
 						img.flipAroundY();
 					if (y % 2 != 0)
@@ -140,6 +168,19 @@ void TerrainManager::terrainInit(Ogre::String file, OgreManager* o)
 	_OgreManager->getSceneManager()->setSkyBox(true, "Examples/EarlyMorningSkyBox", 5000, true, Ogre::Quaternion::IDENTITY, "GameResources");
 }
 
+//void TerrainManager::setupPaging()
+//{
+//	 // Paging setup
+//   mPageManager = OGRE_NEW PageManager();
+//   // Since we're not loading any pages from .page files, we need a way just 
+//   // to say we've loaded them without them actually being loaded
+//   mPageManager->setPageProvider(&mDummyPageProvider);
+//   mPageManager->addCamera(const_cast<Camera *>(cam));
+//   mTerrainPaging = OGRE_NEW TerrainPaging(mPageManager);
+//   PagedWorld* world = mPageManager->createWorld();
+//   TerrainPagedWorldSection* worldSection = mTerrainPaging->createWorldSection(world, _TerrainGroup, 2000, 3000, TERRAIN_PAGE_MIN_X, TERRAIN_PAGE_MIN_Y, TERRAIN_PAGE_MAX_X, TERRAIN_PAGE_MAX_Y);
+//}
+
 void TerrainManager::clearTerrainManager()
 {
 	_TerrainGroup->removeAllTerrains();
@@ -147,6 +188,8 @@ void TerrainManager::clearTerrainManager()
 	OgreManager::Instance()->getSceneManager()->setSkyBox(false, "");
 	OGRE_DELETE _TerrainGroup;
 	OGRE_DELETE _TerrainGlobalOptions;
+
+	_OgreManager->removeResourceGroup("TerrainResources");
 }
 
 Ogre::ManualObject* TerrainManager::createTerrainDecal(Ogre::String& name, Ogre::String& material, Ogre::String& resourceGroup)
@@ -246,3 +289,15 @@ Ogre::Real TerrainManager::getTerrainHeight(Ogre::Real x, Ogre::Real z)
 		}  
 	}
 }
+
+/*
+http://www.ogre3d.org/forums/viewtopic.php?f=2&t=60456
+
+http://www.ogre3d.org/docs/api/html/classOgre_1_1PageManager.html
+
+http://www.ogre3d.org/forums/viewtopic.php?f=1&t=73377
+
+http://www.ogre3d.org/forums/viewtopic.php?f=2&t=65670
+
+https://bitbucket.org/jacmoe/ogitor/src/d8e782345e93bb86d4126102e3aab6eb0b8e6195/Ogitor?at=default
+*/

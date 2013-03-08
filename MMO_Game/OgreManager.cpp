@@ -213,6 +213,8 @@ bool OgreManager::ceguiInit()
 	CEGUI::SchemeManager::getSingleton().create((CEGUI::utf8*)"TaharezLook.scheme");
 	CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
 
+	CEGUI::ImagesetManager::getSingleton().create("SkillsImageset.imageset");
+
 	CEGUI::MouseCursor::getSingleton().setImage( CEGUI::System::getSingleton().getDefaultMouseCursor());
 
 	return true;

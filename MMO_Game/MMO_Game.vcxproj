@@ -86,37 +86,64 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ApplicationMethods.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CombatFunctionality.cpp" />
+    <ClCompile Include="DynamicObject.cpp" />
+    <ClCompile Include="Equipment.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="GameStates.cpp" />
+    <ClCompile Include="GUIRenderer.cpp" />
+    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MapEditor.cpp" />
-    <ClCompile Include="MoveableObject.cpp" />
+    <ClCompile Include="MessageDispatcher.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="OgreInputManager.cpp" />
     <ClCompile Include="OgreManager.cpp" />
-    <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="PlayerStates.cpp" />
+    <ClCompile Include="SkillList.cpp" />
+    <ClCompile Include="States.cpp" />
+    <ClCompile Include="StaticObject.cpp" />
+    <ClCompile Include="SteeringBehaviours.cpp" />
     <ClCompile Include="TerrainManager.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ApplicationMethodBase.h" />
+    <ClInclude Include="ApplicationMethods.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="Clock.h" />
+    <ClInclude Include="CombatFunctionality.h" />
+    <ClInclude Include="DynamicObject.h" />
+    <ClInclude Include="Equipment.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="GameStates.h" />
+    <ClInclude Include="GUIRenderer.h" />
+    <ClInclude Include="IdManager.h" />
     <ClInclude Include="Interface.h" />
+    <ClInclude Include="Inventory.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MapEditor.h" />
-    <ClInclude Include="MoveableObject.h" />
+    <ClInclude Include="MessageDispatcher.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="OgreInputManager.h" />
     <ClInclude Include="OgreManager.h" />
-    <ClInclude Include="PhysicsObject.h" />
-    <ClInclude Include="PlayerObject.h" />
-    <ClInclude Include="State.h" />
+    <ClInclude Include="PageListener.h" />
+    <ClInclude Include="SkillBase.h" />
+    <ClInclude Include="SkillList.h" />
+    <ClInclude Include="StateBase.h" />
     <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="PlayerStates.h" />
+    <ClInclude Include="States.h" />
     <ClInclude Include="StaticObject.h" />
+    <ClInclude Include="SteeringBehaviours.h" />
+    <ClInclude Include="Structs.h" />
+    <ClInclude Include="Telegram.h" />
     <ClInclude Include="TerrainManager.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

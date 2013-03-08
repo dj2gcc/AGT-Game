@@ -1,28 +1,37 @@
 #pragma once
 
-#include "PhysicsObject.h"
+
 #include<vector>
+
+#include "Ogre.h"
+
+class Character;
+class DynamicObject;
 
 class World
 {
 private:
 
-	std::vector<Object*> _WorldObjects;
-	std::vector<Object*>::iterator _woi;
+	std::vector<Character*> _Population;
+	std::vector<Character*>::iterator _p;
 
-	PhysicsObject* _Player;
+	DynamicObject* _InControl;
 
-	MoveableObject* _InControl;
+	World(){}
+	~World(){}
 
 public:
 
-	World();
-	~World();
+	static World* Instance();
 
 	void populate();
+	void destroy();
 
 	void update(Ogre::Real tslf);
 
-	MoveableObject* getPlayer() { return _Player; }
-	MoveableObject* getInControl() { return _InControl; }
+	Character* getPlayer() { return _Population.at(0); }
+	DynamicObject* getInControl() { return _InControl; }
+	Character* getCharacter(int id);
 };
+
+#define _World World::Instance()

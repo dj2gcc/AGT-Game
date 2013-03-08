@@ -11,6 +11,9 @@
 #include<string>
 
 #include "World.h"
+#include "Clock.h"
+
+#include "GUIRenderer.h"
 
 
 class GamePlay : public Interface
@@ -24,13 +27,14 @@ private:
 	OIS::KeyCode _LeftSide;
 	OIS::KeyCode _RightSide;
 	OIS::KeyCode _Jump;
+	OIS::KeyCode _Inventory;
 
 	OgreManager* _OgreManager;
 
 	CEGUI::Window* _CEGUISheet;
 	CEGUI::Window* _QuitButton;
 
-	World* _World;
+	//World* _World;
 
 public:
 

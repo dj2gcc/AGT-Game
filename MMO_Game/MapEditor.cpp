@@ -3,7 +3,7 @@
 MapEditor::MapEditor()
 {
 	slotSize = 512;
-	data.size = 5120;
+	data.size = 512 * 4;
 	data.buffer = new unsigned char[data.size*data.size];
 }
 
@@ -147,7 +147,7 @@ bool MapEditor::CEGUIEventQuit(const CEGUI::EventArgs& arg)
 
 bool MapEditor::CEGUIEventGenerate(const CEGUI::EventArgs& arg)
 {
-	makeTerrain(0.5);
+	makeTerrain(2);
 	writeToFiles("");
 	return true;
 }
@@ -223,12 +223,12 @@ bool MapEditor::makeTerrain(float fRoughness )
 		return false;   
 	}   
     
-	for(int a=0; a<data.size*data.size; a++ )   
-	{
-		fTempBuffer[a]= rangedRandom( -fHeight/2, fHeight/2 );
-	}
+	//for(int a=0; a<data.size*data.size; a++ )   
+	//{
+	//	fTempBuffer[a]= rangedRandom( -fHeight/2, fHeight/2 );
+	//}
 
-	//fTempBuffer[0] = 0.0f;
+	fTempBuffer[0] = 0.0f;
 
 	editorLog << "Generating heightmap size " << (data.size * data.size) << "." << std::endl;
       
@@ -410,7 +410,7 @@ bool MapEditor::writeToFiles(char* name)
 	std::string::size_type pos = std::string( buffer ).find_last_of( "\\/" ); 
 	address = std::string( buffer ).substr( 0, pos); 
 
-	address += "\\Resources\\TerrainData";
+	address += "\\Resources\\TerrainData2";
 
 	if(CreateDirectory(address.c_str(), NULL) == 0)
 	{
