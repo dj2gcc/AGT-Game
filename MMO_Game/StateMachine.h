@@ -40,9 +40,9 @@ public:
 	{
 		assert(newState && "<StateMachine::ChangeState>: Trying to change to a null state");
 
-		_PreviousState = _CurrentState;
-
 		_CurrentState->Exit(_Owner);
+
+		_PreviousState = _CurrentState;
 
 		_CurrentState = newState;
 

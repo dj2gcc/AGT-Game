@@ -49,7 +49,7 @@ void GUIRenderer::initialise(CEGUI::Window* sheet, Character* player)
 
 	_ExpBar = (CEGUI::ProgressBar*)wmgr.createWindow("TaharezLook/ProgressBar", "OgreGame/MainSheet/Exp");
 	_ExpBar->setSize(CEGUI::UVector2(CEGUI::UDim(1.0f, 0.0f), CEGUI::UDim(0.025f, 0.0f)));
-	_ExpBar->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0f, 0.0f) ,CEGUI::UDim(0.995f, 0.0f)));
+	_ExpBar->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0f, 0.0f) ,CEGUI::UDim(0.975f, 0.0f)));
 	_ExpBar->setText("Exp");
 	_ExpBar->setProgress(toPercentage(_Player->getExp(), _Player->getExpToLvl()));
 	sheet->addChildWindow(_ExpBar);
@@ -196,6 +196,7 @@ void GUIRenderer::update(float tslf)
 {
 	_HpBar->setProgress(toPercentage(_Player->getCombat()->_Attributes.hp, _Player->getCombat()->_Attributes.maxHp));
 	_MpBar->setProgress(toPercentage(_Player->getCombat()->_Attributes.mp, _Player->getCombat()->_Attributes.maxMp));
+	_ExpBar->setProgress(toPercentage(_Player->getExp(), _Player->getExpToLvl()));
 
 	if(_TargetHpBar->isVisible())
 	{

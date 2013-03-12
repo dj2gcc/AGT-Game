@@ -11,6 +11,8 @@ Character::Character(Ogre::String mesh, std::string name) : DynamicObject(mesh)
 	_States = new StateMachine<Character>(this);
 	_States->SetCurrentState(Alive::Instance());
 
+	_Target = NULL;
+
 	_Exp = 0;
 	_ExpToLvl = 100;
 	_Level = 1;

@@ -9,6 +9,7 @@ Alive* Alive::Instance()
 
 void Alive::Enter(Character* o)
 {
+	_Timer = 0;
 }
 
 void Alive::Execute(Character* o, float tslf) 
@@ -35,6 +36,7 @@ Dead* Dead::Instance()
 
 void Dead::Enter(Character* o) 
 {
+	_Timer = 0;
 }
 
 void Dead::Execute(Character* o, float tslf) 
@@ -49,6 +51,7 @@ void Dead::Execute(Character* o, float tslf)
 
 void Dead::Exit(Character* o) 
 {
+
 }
 
 bool Dead::OnMessage(Character* o, const Telegram& t) 

@@ -46,10 +46,9 @@ void CombatFunctionality::takeDamage(float damage)
 		_Attributes.hp -= damage - (_Attributes.defense * damage);
 	}
 
-	if(_Attributes.hp <= 0)
+	if(_Attributes.hp < 0)
 	{
 		_Attributes.hp = 0;
-		_Parent->getStateMachine()->ChangeState(Dead::Instance());
 	}
 }
 
@@ -69,7 +68,7 @@ bool CombatFunctionality::receiveEffect(ApplicationMethodBase* effect)
 
 bool CombatFunctionality::castEffect(std::string name)
 {
-	if(!_Casting && _Parent->_Target)
+	if(!_Casting && _Parent->_Target != NULL)
 	{
 		for(_sb = _SkillBook.begin(); _sb != _SkillBook.end(); _sb++)
 		{
@@ -152,7 +151,7 @@ void CombatFunctionality::update(float tslf)
 		if(_Attributes.hp == 0)
 		{
 			Dispatch->DispatchMessageA(0, _Parent->getID(), (*_e)->getSenderID(), "CombatEnd", _Parent);
-			_e = _Effects.end();
+			break;
 		}
 
 		if((*_e)->getSkill()->getProgress() >= (*_e)->getSkill()->getDuration())
@@ -169,5 +168,6 @@ void CombatFunctionality::update(float tslf)
 	if(_Attributes.hp == 0)
 	{
 		_Effects.clear();
+		_Parent->getStateMachine()->ChangeState(Dead::Instance());
 	}
 }
