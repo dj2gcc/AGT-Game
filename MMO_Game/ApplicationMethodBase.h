@@ -10,13 +10,16 @@ protected:
 
 	SkillBase* _Skill;
 
+	int _SenderID;
+
 public:
 
-	ApplicationMethodBase(SkillBase* s){ _Skill = s; }
+	ApplicationMethodBase(SkillBase* s, int senderId){ _Skill = s; _SenderID = senderId; }
 
 	virtual ~ApplicationMethodBase(){}
 
 	SkillBase* getSkill() { return _Skill; }
+	int getSenderID() { return _SenderID; }
 
 	virtual void update(Character* c, float tslf) {}
 };

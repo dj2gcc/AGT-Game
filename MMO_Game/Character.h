@@ -21,6 +21,8 @@ protected:
 
 	StateMachine<Character>* _States;
 
+	int _Exp, _ExpToLvl, _Level;
+
 public:
 	Character* _Target;
 
@@ -35,6 +37,9 @@ public:
 	CombatFunctionality* getCombat() { return _Combat; }
 	StateMachine<Character>* getStateMachine() { return _States; }
 	Inventory* getInventory() { return _Inventory; }
+	int getLevel() { return _Level; }
+	int getExp() { return _Exp; }
+	int getExpToLvl() { return _ExpToLvl; }
 
 	void update(Ogre::Real tslf);
 };

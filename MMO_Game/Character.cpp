@@ -10,6 +10,10 @@ Character::Character(Ogre::String mesh, std::string name) : DynamicObject(mesh)
 
 	_States = new StateMachine<Character>(this);
 	_States->SetCurrentState(Alive::Instance());
+
+	_Exp = 0;
+	_ExpToLvl = 100;
+	_Level = 1;
 }
 
 Character::~Character()
@@ -45,7 +49,17 @@ bool Character::HandleMessage(Telegram& msg)
 	if(msg.type == "Combat")
 	{
 		_Combat->receiveEffect((ApplicationMethodBase*)msg.message);
-	}
+	}else
+		if(msg.type == "CombatEnd")
+		{
+			_Exp += 10;
+
+			if(_Exp >= _ExpToLvl)
+			{
+				_Exp = 0;
+				_Level++;
+			}
+		}
 	return true;
 }
 

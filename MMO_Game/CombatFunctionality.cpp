@@ -79,27 +79,27 @@ bool CombatFunctionality::castEffect(std::string name)
 				(*_sb)->setProgress(0.0f);
 				if((*_sb)->getType() == "Dot")
 				{
-					_Casting = new Dot((*_sb));
+					_Casting = new Dot((*_sb), _Parent->getID());
 				}else
 					if((*_sb)->getType() == "Hot")
 					{
-						_Casting = new Hot((*_sb));
+						_Casting = new Hot((*_sb), _Parent->getID());
 					}else
 						if((*_sb)->getType() == "Buff")
 						{
-							_Casting = new Buff((*_sb));
+							_Casting = new Buff((*_sb), _Parent->getID());
 						}else
 							if((*_sb)->getType() == "Debuff")
 							{
-								_Casting = new Debuff((*_sb));
+								_Casting = new Debuff((*_sb), _Parent->getID());
 							}else
 								if((*_sb)->getType() == "Channeling")
 								{
-									_Casting = new Channeling((*_sb));
+									_Casting = new Channeling((*_sb), _Parent->getID());
 								}else
 									if((*_sb)->getType() == "Instant")
 									{
-										_Casting = new Instant((*_sb));
+										_Casting = new Instant((*_sb), _Parent->getID());
 									}
 				return true;
 			}
@@ -149,6 +149,12 @@ void CombatFunctionality::update(float tslf)
 	{
 		(*_e)->update(_Parent, tslf);
 
+		if(_Attributes.hp == 0)
+		{
+			Dispatch->DispatchMessageA(0, _Parent->getID(), (*_e)->getSenderID(), "CombatEnd", _Parent);
+			_e = _Effects.end();
+		}
+
 		if((*_e)->getSkill()->getProgress() >= (*_e)->getSkill()->getDuration())
 		{
 			delete *_e;  
@@ -158,5 +164,10 @@ void CombatFunctionality::update(float tslf)
 		{
 			_e++;
 		}
+	}
+
+	if(_Attributes.hp == 0)
+	{
+		_Effects.clear();
 	}
 }

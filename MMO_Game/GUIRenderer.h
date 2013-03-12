@@ -18,6 +18,8 @@ private:
 	CEGUI::ProgressBar* _HpBar;
 	CEGUI::ProgressBar* _MpBar;
 
+	CEGUI::ProgressBar* _ExpBar;
+
 	CEGUI::Window* _TargetNameBar;
 	CEGUI::ProgressBar* _TargetHpBar;
 	CEGUI::ProgressBar* _TargetMpBar;
