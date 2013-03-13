@@ -99,6 +99,9 @@
     <ClCompile Include="States.cpp">
       <Filter>AI</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -201,6 +204,9 @@
       <Filter>GameData</Filter>
     </ClInclude>
     <ClInclude Include="States.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerController.h">
       <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>

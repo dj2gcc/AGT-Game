@@ -26,7 +26,6 @@ enum Animation
 class DynamicObject : public Object
 {
 protected:
-	Orientation _Orientation;
 
 	Physics _Motion;
 

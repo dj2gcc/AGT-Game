@@ -4,12 +4,6 @@
 #include "OgreVector2.h"
 #include "Equipment.h"
 
-struct Orientation{
-
-	Ogre::Vector3 position;
-	Ogre::Vector3 facing;
-};
-
 struct Stats{
 	float hp;
 	float maxHp;
@@ -20,13 +14,21 @@ struct Stats{
 };
 
 struct Physics{
-	Ogre::Vector3 velocity;
-	Ogre::Vector3 acceleration;
-	Ogre::Vector3 force;
+	Ogre::Vector3 _Velocity;
+	Ogre::Vector3 _Acceleration;
+	Ogre::Vector3 _Force;
 
-	float mass;
+	Ogre::Vector3 _Rotation;
 
-	bool airborne;
+	Ogre::Vector3 _Position;
+	Ogre::Vector3 _Facing;
+
+	int _MovementSpeed;
+	int _RotationSpeed;
+
+	float _Mass;
+
+	bool _Airborne;
 };
 
 struct Equip
