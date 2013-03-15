@@ -104,7 +104,6 @@
     <ClCompile Include="OgreInputManager.cpp" />
     <ClCompile Include="OgreManager.cpp" />
     <ClCompile Include="PlayerController.cpp" />
-    <ClCompile Include="PlayerStates.cpp" />
     <ClCompile Include="SkillList.cpp" />
     <ClCompile Include="States.cpp" />
     <ClCompile Include="StaticObject.cpp" />
@@ -119,6 +118,7 @@
     <ClInclude Include="Clock.h" />
     <ClInclude Include="CombatFunctionality.h" />
     <ClInclude Include="DynamicObject.h" />
+    <ClInclude Include="DynamicObjectDecorator.h" />
     <ClInclude Include="Equipment.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="GameState.h" />
@@ -140,7 +140,6 @@
     <ClInclude Include="SkillList.h" />
     <ClInclude Include="StateBase.h" />
     <ClInclude Include="StateMachine.h" />
-    <ClInclude Include="PlayerStates.h" />
     <ClInclude Include="States.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="SteeringBehaviours.h" />

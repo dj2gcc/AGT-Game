@@ -4,7 +4,7 @@
 #include "World.h"
 #include "Character.h"
 
-class PlayerController
+class PlayerController : public DynamicObjectDecorator
 {
 private:
 
@@ -20,12 +20,16 @@ private:
 
 public:
 
-	PlayerController();
+	PlayerController(DynamicObject* object);
 	~PlayerController();
 
 	bool setControl(DynamicObject* object);
 
 	void keyPressed( const OIS::KeyEvent& evt );
 	void keyReleased( const OIS::KeyEvent& evt );
+
+	void update(Ogre::Real tslf);
+
+	DynamicObject* getControlled() { return _Controlled; }
 
 };

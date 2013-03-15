@@ -72,9 +72,6 @@
     <ClCompile Include="MessageDispatcher.cpp">
       <Filter>AI</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerStates.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
     <ClCompile Include="CombatFunctionality.cpp">
       <Filter>AI</Filter>
     </ClCompile>
@@ -167,9 +164,6 @@
     <ClInclude Include="Clock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStates.h">
-      <Filter>AI</Filter>
-    </ClInclude>
     <ClInclude Include="StateBase.h">
       <Filter>AI</Filter>
     </ClInclude>
@@ -207,6 +201,9 @@
       <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="PlayerController.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicObjectDecorator.h">
       <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>

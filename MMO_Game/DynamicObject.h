@@ -39,8 +39,6 @@ protected:
 	Ogre::SceneNode* _BodyNode;
 	Ogre::SceneNode* _ChaseNode;
 
-	bool _MoveUp, _MoveDown, _RotateLeft, _RotateRight, _MoveLeftSide, _MoveRightSide;
-
 	float _Height;
 
 	SteeringBehaviours* _Steering;
@@ -50,13 +48,10 @@ public:
 	DynamicObject(Ogre::String model);
 	virtual ~DynamicObject();
 
-	virtual void MoveUp();
-	virtual void MoveDown();
-	virtual void RotateLeft();
-	virtual void RotateRight();
-	virtual void MoveLeftSide();
-	virtual void MoveRightSide();
-	virtual void Jump();
+	void setDirection(Ogre::Vector3 dir);
+	void setVelocity(Ogre::Vector3 vel);
+	void setRotation(Ogre::Vector3 rot);
+	void Jump();
 
 	void defineAnimationStates(AnimationStates states);
 

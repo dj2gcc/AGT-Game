@@ -24,7 +24,7 @@ struct Physics{
 	Ogre::Vector3 _Facing;
 
 	int _MovementSpeed;
-	int _RotationSpeed;
+	float _RotationSpeed;
 
 	float _Mass;
 

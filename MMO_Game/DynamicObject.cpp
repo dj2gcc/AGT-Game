@@ -65,13 +65,6 @@ DynamicObject::DynamicObject(Ogre::String model) : Object()
 
 	_BodyNode->scale(20, 20, 20);
 
-	_MoveUp = false;
-	_MoveDown = false;
-	_RotateLeft = false; 
-	_RotateRight = false;
-	_MoveLeftSide = false;
-	_MoveRightSide = false;
-
 	_Height = _Body->getBoundingRadius();
 
 	_Orientation.position = _BodyNode->getPosition();
@@ -81,6 +74,10 @@ DynamicObject::DynamicObject(Ogre::String model) : Object()
 	_Motion.acceleration = Ogre::Vector3(0, -10, 0);
 	_Motion.mass = 70;
 	_Motion.airborne = false;
+
+	
+	_Motion._MovementSpeed = 800;
+	_Motion._RotationSpeed = 0.8;
 }
 
 DynamicObject::~DynamicObject()
@@ -235,56 +232,27 @@ void DynamicObject::fitCamera(Ogre::Camera* c)
 	c->lookAt(_BodyNode->getPosition() + Ogre::Vector3(0, 0, 30));
 }
 
-void DynamicObject::MoveUp()
+void DynamicObject::setDirection(Ogre::Vector3 dir)
 {
-	_MoveUp = (_MoveUp == false ? true : false);
+	_Motion._Facing = dir;
+}
 
-	if(_Motion.airborne)
-		return;
+void DynamicObject::setVelocity(Ogre::Vector3 vel)
+{
+	Ogre::Vector3 _Velocity = vel;
 
-	if(_MoveUp)
-	{
-		setDefaultAnimation(Run);
-	}else
+	if(vel.x == 0 && vel.y == 0 && vel.z == 0)
 	{
 		setDefaultAnimation(Idle);
+	}else
+	{
+		setDefaultAnimation(Run);
 	}
 }
 
-void DynamicObject::MoveDown()
+void DynamicObject::setRotation(Ogre::Vector3 rot)
 {
-	_MoveDown = (_MoveDown == false ? true : false);
-
-	if(_Motion.airborne)
-		return;
-
-	if(_MoveDown)
-	{
-		setDefaultAnimation(Run);
-	}else
-	{
-		setDefaultAnimation(Idle);
-	}
-}
-
-void DynamicObject::RotateLeft()
-{
-	_RotateLeft = (_RotateLeft == false ? true : false);
-}
-
-void DynamicObject::RotateRight()
-{
-	_RotateRight = (_RotateRight == false ? true : false);
-}
-
-void DynamicObject::MoveLeftSide()
-{
-	_MoveLeftSide = (_MoveLeftSide == false ? true : false);
-}
-
-void DynamicObject::MoveRightSide()
-{
-	_MoveRightSide = (_MoveRightSide == false ? true : false);
+	Ogre::Vector3 _Rotation = rot;
 }
 
 void DynamicObject::Jump()
@@ -369,36 +337,10 @@ void DynamicObject::updateAnimation(Ogre::Real tslf)
 
 void DynamicObject::update(Ogre::Real tslf)
 {
-	if(_MoveUp == true && _MoveDown == false)
-	{
-		_BodyNode->translate(0,0, 800 * tslf, Ogre::Node::TS_LOCAL);
-	}
+	_BodyNode->yaw(Ogre::Radian(_Motion._Rotation.y * 0.8 * tslf));
 
-	if(_MoveDown == true && _MoveUp == false)
-	{
-		_BodyNode->translate(0,0, -800 * tslf, Ogre::Node::TS_LOCAL);
-	}
-
-	if(_RotateLeft == true && _RotateRight == false)
-	{
-		_BodyNode->yaw(Ogre::Radian(0.8 * tslf));
-	}
+	_BodyNode->translate(_Motion._Velocity.x * _Motion._MovementSpeed * tslf , _Motion._Velocity.y * _Motion._MovementSpeed * tslf, _Motion._Velocity.z * _Motion._MovementSpeed * tslf, Ogre::Node::TS_LOCAL);
 	
-	if(_RotateRight == true && _RotateLeft == false)
-	{
-		_BodyNode->yaw(Ogre::Radian(-0.8 * tslf));
-	}
-
-	if(_MoveLeftSide == true && _MoveRightSide == false)
-	{
-		_BodyNode->translate(800 * tslf , 0, 0, Ogre::Node::TS_LOCAL);
-	}
-
-	if(_MoveRightSide == true && _MoveLeftSide == false)
-	{
-		_BodyNode->translate(-800 * tslf , 0, 0, Ogre::Node::TS_LOCAL);
-	}
-
 	updateAnimation(tslf);
 
 	if(_Motion.airborne)
