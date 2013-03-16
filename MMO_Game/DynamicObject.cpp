@@ -11,13 +11,6 @@ DynamicObject::DynamicObject() : Object()
 	_Body = NULL;
 	_BodyNode = NULL;
 
-	_MoveUp = false;
-	_MoveDown = false;
-	_RotateLeft = false; 
-	_RotateRight = false;
-	_MoveLeftSide = false;
-	_MoveRightSide = false;
-
 	_Height = 0;
 
 	_States._Dance = "Dance";
@@ -67,13 +60,13 @@ DynamicObject::DynamicObject(Ogre::String model) : Object()
 
 	_Height = _Body->getBoundingRadius();
 
-	_Orientation.position = _BodyNode->getPosition();
-	_Orientation.facing = Ogre::Vector3(1, _Orientation.position.y, 0);
+	_Motion._Position = _BodyNode->getPosition();
+	_Motion._Facing = Ogre::Vector3(1, _Motion._Position.y, 0);
 
-	_Motion.velocity = _Motion.force = Ogre::Vector3(0,0,0);
-	_Motion.acceleration = Ogre::Vector3(0, -10, 0);
-	_Motion.mass = 70;
-	_Motion.airborne = false;
+	_Motion._Velocity = _Motion._Force = Ogre::Vector3(0,0,0);
+	_Motion._Acceleration = Ogre::Vector3(0, -10, 0);
+	_Motion._Mass = 70;
+	_Motion._Airborne = false;
 
 	
 	_Motion._MovementSpeed = 800;
@@ -257,13 +250,13 @@ void DynamicObject::setRotation(Ogre::Vector3 rot)
 
 void DynamicObject::Jump()
 {
-	if(!_Motion.airborne)
+	if(!_Motion._Airborne)
 	{
-		_Motion.airborne = true;
+		_Motion._Airborne = true;
 
 		setAdditionalAnimation(JumpLoop, Overriding);
 
-		_Motion.velocity.y = (40 + (_Motion.mass * _Motion.velocity.y) / _Motion.mass);
+		_Motion._Velocity.y = (40 + (_Motion._Mass * _Motion._Velocity.y) / _Motion._Mass);
 	}
 }
 
@@ -343,15 +336,15 @@ void DynamicObject::update(Ogre::Real tslf)
 	
 	updateAnimation(tslf);
 
-	if(_Motion.airborne)
+	if(_Motion._Airborne)
 	{
-		_Motion.velocity.y = _Motion.velocity.y + (_Motion.acceleration.y * (tslf * 20));
-		float s = (_Motion.velocity.y * (tslf * 20)) + (0.5 * ((_Motion.acceleration.y * (tslf * 20)) * (_Motion.acceleration.y * (tslf * 20))));
+		_Motion._Velocity.y = _Motion._Velocity.y + (_Motion._Acceleration.y * (tslf * 20));
+		float s = (_Motion._Velocity.y * (tslf * 20)) + (0.5 * ((_Motion._Acceleration.y * (tslf * 20)) * (_Motion._Acceleration.y * (tslf * 20))));
 		_BodyNode->setPosition(_BodyNode->getPosition().x, _BodyNode->getPosition().y + s, _BodyNode->getPosition().z);
 		if(_BodyNode->getPosition().y - _Height <= TerrainManager::Instance()->getTerrainHeight(_BodyNode->getPosition().x, _BodyNode->getPosition().z))
 		{
-			_Motion.velocity.y = 0;
-			_Motion.airborne = false;
+			_Motion._Velocity.y = 0;
+			_Motion._Airborne = false;
 
 			setAdditionalAnimation(JumpEnd, Overriding);
 		}

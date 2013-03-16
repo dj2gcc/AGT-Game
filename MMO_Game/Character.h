@@ -1,13 +1,14 @@
 #pragma once 
 
 #include "DynamicObject.h"
-#include "Telegram.h"
+#include "StateMachine.h"
 #include<string.h>
 #include<vector>
+
+#include "Telegram.h"
 #include "MessageDispatcher.h"
 #include "CombatFunctionality.h"
 #include "Inventory.h"
-#include "StateMachine.h"
 
 class Character : public DynamicObject
 {

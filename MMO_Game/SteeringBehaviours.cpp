@@ -10,7 +10,7 @@ int SteeringBehaviours::rangedRandom(int i1, int i2)
 	return ( i1+( i2-i1 )*( ( float )rand( ) )/( ( float )RAND_MAX ) );
 } 
 
-Ogre::Vector3 SteeringBehaviours::_Wander(Orientation o)
+Ogre::Vector3 SteeringBehaviours::_Wander(Physics o)
 {
 	double m_dWanderRadius = 20;
 	double m_dWanderDistance = 300;
@@ -27,9 +27,9 @@ Ogre::Vector3 SteeringBehaviours::_Wander(Orientation o)
 	return targetLocal;
 }
 
-Ogre::Vector3 SteeringBehaviours::_Patrol(Orientation o, float tslf)
+Ogre::Vector3 SteeringBehaviours::_Patrol(Physics o, float tslf)
 {
-	Ogre::Vector3 difference = Ogre::Vector3(o.position.x - _PatrolPoints[_NextPoint].x, o.position.y - _PatrolPoints[_NextPoint].y, 0);
+	Ogre::Vector3 difference = Ogre::Vector3(o._Position.x - _PatrolPoints[_NextPoint].x, o._Position.y - _PatrolPoints[_NextPoint].y, 0);
 	Ogre::Vector3 distance = difference * difference;
 
 	if(distance.x + distance.y <= 100)
@@ -73,20 +73,20 @@ SteeringBehaviours::~SteeringBehaviours()
 {
 }
 
-void SteeringBehaviours::convertToWorld(Orientation &o)
+void SteeringBehaviours::convertToWorld(Physics &o)
 {
 
 }
 
-void SteeringBehaviours::steer(Orientation &o, float tslf)
+void SteeringBehaviours::steer(Physics &o, float tslf)
 {
 	if(_Flags & WANDER)
 	{
-		o.facing =  _Wander(o);
+		o._Facing =  _Wander(o);
 	}
 
 	if(_Flags & PATROL)
 	{
-		o.facing = _Patrol(o, tslf);
+		o._Facing = _Patrol(o, tslf);
 	}
 }

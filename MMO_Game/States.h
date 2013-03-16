@@ -1,7 +1,7 @@
 #pragma once
 
 #include "StateBase.h"
-#include "Character.h"
+class Character;
 
 class Alive : public StateBase<Character>
 {

@@ -66,7 +66,7 @@ public:
 	Ogre::AnimationState* AdditionalAnimation() const{ return _AdditionalAnimation; }
 	Ogre::AnimationState* DefaultAnimation() const{ return _DefaultAnimation; }
 
-	virtual void fitCamera(Ogre::Camera* c);
+	void fitCamera(Ogre::Camera* c);
 
 	virtual void update(Ogre::Real tslf);
 };

@@ -1,10 +1,8 @@
 #pragma once
 
-#include "OIS.h"
-#include "World.h"
-#include "Character.h"
+#include "Controller.h"
 
-class PlayerController : public DynamicObjectDecorator
+class PlayerController : public Controller
 {
 private:
 
@@ -16,20 +14,16 @@ private:
 	OIS::KeyCode _RightSide;
 	OIS::KeyCode _Jump;
 
-	DynamicObject* _Controlled;
-
 public:
 
-	PlayerController(DynamicObject* object);
+	PlayerController(Character* object);
 	~PlayerController();
 
-	bool setControl(DynamicObject* object);
+	bool setControl(Character* object);
 
 	void keyPressed( const OIS::KeyEvent& evt );
 	void keyReleased( const OIS::KeyEvent& evt );
 
 	void update(Ogre::Real tslf);
-
-	DynamicObject* getControlled() { return _Controlled; }
 
 };

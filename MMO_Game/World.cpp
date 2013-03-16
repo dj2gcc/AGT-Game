@@ -1,8 +1,8 @@
 #include "World.h"
 #include "SkillList.h"
 
-#include "Character.h"
 #include "Equipment.h"
+#include "PlayerController.h"
 
 World* World::Instance()
 {
@@ -13,17 +13,17 @@ World* World::Instance()
 
 void World::populate()
 {
-	_Population.push_back(new Character("sinbad.mesh", "Player"));
-	_Population.at(0)->fitCamera(OgreManager::Instance()->getCamera());
+	_Population.push_back(new PlayerController(new Character("sinbad.mesh", "Player")));
+	_Population.at(0)->getControlled()->fitCamera(OgreManager::Instance()->getCamera());
 	_InControl = _Population.at(0);
 
-	_Population.push_back(new Character("sinbad.mesh", "Enemy"));
+	_Population.push_back(new PlayerController(new Character("sinbad.mesh", "Enemy")));
 
-	_Population.at(0)->getCombat()->learnSpell(new Attack());
-	_Population.at(0)->getCombat()->learnSpell(new Pain());
-	_Population.at(0)->getCombat()->learnSpell(new Heal());
+	_Population.at(0)->getControlled()->getCombat()->learnSpell(new Attack());
+	_Population.at(0)->getControlled()->getCombat()->learnSpell(new Pain());
+	_Population.at(0)->getControlled()->getCombat()->learnSpell(new Heal());
 
-	_Population.at(0)->Equip(new Equipment("Sword.mesh", "Sword", "RHand"));
+	_Population.at(0)->getControlled()->Equip(new Equipment("Sword.mesh", "Sword", "RHand"));
 }
 
 void World::destroy()
@@ -47,7 +47,7 @@ Character* World::getCharacter(int id)
 { 
 	if(id < _Population.size() && id >= 0)
 	{
-		return _Population.at(id); 
+		return _Population.at(id)->getControlled(); 
 	}else 
 	{ 
 		return NULL; 

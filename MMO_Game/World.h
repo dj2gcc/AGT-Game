@@ -7,15 +7,16 @@
 
 class Character;
 class DynamicObject;
+class Controller;
 
 class World
 {
 private:
 
-	std::vector<Character*> _Population;
-	std::vector<Character*>::iterator _p;
+	std::vector<Controller*> _Population;
+	std::vector<Controller*>::iterator _p;
 
-	DynamicObject* _InControl;
+	Controller* _InControl;
 
 	World(){}
 	~World(){}
@@ -29,8 +30,9 @@ public:
 
 	void update(Ogre::Real tslf);
 
-	Character* getPlayer() { return _Population.at(0); }
-	DynamicObject* getInControl() { return _InControl; }
+	Controller* getPlayerController() { return _Population.at(0); }
+	Character* getPlayer() { return _Population.at(0)->getControlled(); }
+	Character* getInControl() { return _InControl->getControlled(); }
 	Character* getCharacter(int id);
 };
 

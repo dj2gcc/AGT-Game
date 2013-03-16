@@ -145,48 +145,17 @@ bool GamePlay::keyPressed( const OIS::KeyEvent& evt )
 	sys.injectKeyDown(evt.key);
 	sys.injectChar(evt.text);
 
-	if(evt.key == _Up)
+
+	if(evt.key == OIS::KC_ESCAPE)
 	{
-		_World->getInControl()->MoveUp();
-	}else
-		if(evt.key == _Down)
+		if(_QuitButton->isVisible())
 		{
-			_World->getInControl()->MoveDown();
+			_QuitButton->hide();
 		}else
-			if(evt.key == _Left)
-			{
-				_World->getInControl()->RotateLeft();
-			}else
-				if(evt.key == _Right)
-				{
-					_World->getInControl()->RotateRight();
-				}else
-					if(evt.key == _LeftSide)
-					{
-						_World->getInControl()->MoveLeftSide();
-					}else
-						if(evt.key == _RightSide)
-						{
-							_World->getInControl()->MoveRightSide();
-						}else
-							if(evt.key == _Jump)
-							{
-								_World->getInControl()->Jump();
-							}else
-								if(evt.key == _Inventory)
-								{
-									_World->getPlayer()->getInventory()->showContent();
-								}else
-									if(evt.key == OIS::KC_ESCAPE)
-									{
-										if(_QuitButton->isVisible())
-										{
-											_QuitButton->hide();
-										}else
-										{
-											_QuitButton->setVisible(true);
-										}
-									}
+		{
+			_QuitButton->setVisible(true);
+		}
+	}
 
 	return true;
 }
@@ -194,30 +163,6 @@ bool GamePlay::keyPressed( const OIS::KeyEvent& evt )
 bool GamePlay::keyReleased( const OIS::KeyEvent& evt )
 {
 	CEGUI::System::getSingleton().injectKeyUp(evt.key);
-	if(evt.key == _Up)
-	{
-		_World->getInControl()->MoveUp();
-	}else
-		if(evt.key == _Down)
-		{
-			_World->getInControl()->MoveDown();
-		}else
-			if(evt.key == _Left)
-			{
-				_World->getInControl()->RotateLeft();
-			}else
-				if(evt.key == _Right)
-				{
-					_World->getInControl()->RotateRight();
-				}else
-					if(evt.key == _LeftSide)
-					{
-						_World->getInControl()->MoveLeftSide();
-					}else
-						if(evt.key == _RightSide)
-						{
-							_World->getInControl()->MoveRightSide();
-						}
 
 	return true;
 }

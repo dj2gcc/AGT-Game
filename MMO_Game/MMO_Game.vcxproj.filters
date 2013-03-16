@@ -203,7 +203,7 @@
     <ClInclude Include="PlayerController.h">
       <Filter>AI</Filter>
     </ClInclude>
-    <ClInclude Include="DynamicObjectDecorator.h">
+    <ClInclude Include="Controller.h">
       <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>

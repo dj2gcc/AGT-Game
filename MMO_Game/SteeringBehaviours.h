@@ -12,8 +12,8 @@ private:
 
 	char _Flags;
 
-	Ogre::Vector3 _Wander(Orientation o);
-	Ogre::Vector3 _Patrol(Orientation o, float tslf);
+	Ogre::Vector3 _Wander(Physics o);
+	Ogre::Vector3 _Patrol(Physics o, float tslf);
 
 	Ogre::Vector3 _PatrolPoints[5];
 	int _NextPoint;
@@ -34,7 +34,7 @@ public:
 	bool getWander() { return _Flags & WANDER; }
 	bool getPatrol() { return _Flags & PATROL; }
 
-	void convertToWorld(Orientation &o);
+	void convertToWorld(Physics &o);
 
-	void steer(Orientation &o, float tslf);
+	void steer(Physics &o, float tslf);
 };

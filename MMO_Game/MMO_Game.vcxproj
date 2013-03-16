@@ -118,7 +118,7 @@
     <ClInclude Include="Clock.h" />
     <ClInclude Include="CombatFunctionality.h" />
     <ClInclude Include="DynamicObject.h" />
-    <ClInclude Include="DynamicObjectDecorator.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="Equipment.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="GameState.h" />

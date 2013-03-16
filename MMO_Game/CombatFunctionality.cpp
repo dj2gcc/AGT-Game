@@ -1,6 +1,7 @@
 #include "CombatFunctionality.h"
 #include "MessageDispatcher.h"
 #include "Character.h"
+#include "ApplicationMethods.h"
 
 CombatFunctionality::CombatFunctionality(Character* p)
 {

@@ -1,4 +1,5 @@
 #include "States.h"
+#include "Character.h"
 
 Alive* Alive::Instance()
 {

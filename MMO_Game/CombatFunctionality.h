@@ -1,6 +1,5 @@
 #pragma once
 #include "Structs.h"
-#include "SkillList.h"
 #include "ApplicationMethods.h"
 
 class Character;

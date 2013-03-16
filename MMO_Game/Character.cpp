@@ -67,47 +67,21 @@ bool Character::HandleMessage(Telegram& msg)
 
 void Character::update(Ogre::Real tslf)
 {
-	if(_MoveUp == true && _MoveDown == false)
-	{
-		_BodyNode->translate(0,0, 800 * tslf, Ogre::Node::TS_LOCAL);
-	}
+	_BodyNode->yaw(Ogre::Radian(_Motion._Rotation.y * 0.8 * tslf));
 
-	if(_MoveDown == true && _MoveUp == false)
-	{
-		_BodyNode->translate(0,0, -800 * tslf, Ogre::Node::TS_LOCAL);
-	}
-
-	if(_RotateLeft == true && _RotateRight == false)
-	{
-		_BodyNode->yaw(Ogre::Radian(0.8 * tslf));
-	}
+	_BodyNode->translate(_Motion._Velocity.x * _Motion._MovementSpeed * tslf , _Motion._Velocity.y * _Motion._MovementSpeed * tslf, _Motion._Velocity.z * _Motion._MovementSpeed * tslf, Ogre::Node::TS_LOCAL);
 	
-	if(_RotateRight == true && _RotateLeft == false)
-	{
-		_BodyNode->yaw(Ogre::Radian(-0.8 * tslf));
-	}
-
-	if(_MoveLeftSide == true && _MoveRightSide == false)
-	{
-		_BodyNode->translate(800 * tslf , 0, 0, Ogre::Node::TS_LOCAL);
-	}
-
-	if(_MoveRightSide == true && _MoveLeftSide == false)
-	{
-		_BodyNode->translate(-800 * tslf , 0, 0, Ogre::Node::TS_LOCAL);
-	}
-
 	updateAnimation(tslf);
 
-	if(_Motion.airborne)
+	if(_Motion._Airborne)
 	{
-		_Motion.velocity.y = _Motion.velocity.y + (_Motion.acceleration.y * (tslf * 20));
-		float s = (_Motion.velocity.y * (tslf * 20)) + (0.5 * ((_Motion.acceleration.y * (tslf * 20)) * (_Motion.acceleration.y * (tslf * 20))));
+		_Motion._Velocity.y = _Motion._Velocity.y + (_Motion._Acceleration.y * (tslf * 20));
+		float s = (_Motion._Velocity.y * (tslf * 20)) + (0.5 * ((_Motion._Acceleration.y * (tslf * 20)) * (_Motion._Acceleration.y * (tslf * 20))));
 		_BodyNode->setPosition(_BodyNode->getPosition().x, _BodyNode->getPosition().y + s, _BodyNode->getPosition().z);
 		if(_BodyNode->getPosition().y - _Height <= TerrainManager::Instance()->getTerrainHeight(_BodyNode->getPosition().x, _BodyNode->getPosition().z))
 		{
-			_Motion.velocity.y = 0;
-			_Motion.airborne = false;
+			_Motion._Velocity.y = 0;
+			_Motion._Airborne = false;
 
 			setAdditionalAnimation(JumpEnd, Overriding);
 		}

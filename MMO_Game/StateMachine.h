@@ -1,3 +1,5 @@
+#pragma once
+
 #include "States.h"
 
 template <class object_type>

@@ -1,6 +1,6 @@
 #include "PlayerController.h"
 
-PlayerController::PlayerController(DynamicObject* object)
+PlayerController::PlayerController(Character* object) : Controller()
 {
 		_Up = OIS::KC_W;
 		_Down = OIS::KC_S;
@@ -17,7 +17,7 @@ PlayerController::~PlayerController()
 {
 }
 
-bool PlayerController::setControl(DynamicObject* object)
+bool PlayerController::setControl(Character* object)
 {
 	_Controlled = object;
 	return true;
