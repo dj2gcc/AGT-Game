@@ -31,8 +31,8 @@ public:
 	void update(Ogre::Real tslf);
 
 	Controller* getPlayerController() { return _Population.at(0); }
-	Character* getPlayer() { return _Population.at(0)->getControlled(); }
-	Character* getInControl() { return _InControl->getControlled(); }
+	Character* getPlayer();
+	Controller* getInControl() { return _InControl; }
 	Character* getCharacter(int id);
 };
 

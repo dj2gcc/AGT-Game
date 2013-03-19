@@ -53,3 +53,8 @@ Character* World::getCharacter(int id)
 		return NULL; 
 	}
 }
+
+Character* World::getPlayer() 
+{ 
+	return _Population.at(0)->getControlled(); 
+}

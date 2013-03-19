@@ -63,7 +63,7 @@ DynamicObject::DynamicObject(Ogre::String model) : Object()
 	_Motion._Position = _BodyNode->getPosition();
 	_Motion._Facing = Ogre::Vector3(1, _Motion._Position.y, 0);
 
-	_Motion._Velocity = _Motion._Force = Ogre::Vector3(0,0,0);
+	_Motion._Velocity = _Motion._Force = _Motion._Rotation = Ogre::Vector3(0,0,0);
 	_Motion._Acceleration = Ogre::Vector3(0, -10, 0);
 	_Motion._Mass = 70;
 	_Motion._Airborne = false;
@@ -232,9 +232,9 @@ void DynamicObject::setDirection(Ogre::Vector3 dir)
 
 void DynamicObject::setVelocity(Ogre::Vector3 vel)
 {
-	Ogre::Vector3 _Velocity = vel;
+	_Motion._Velocity += vel;
 
-	if(vel.x == 0 && vel.y == 0 && vel.z == 0)
+	if(_Motion._Velocity.x == 0 && _Motion._Velocity.y == 0 && _Motion._Velocity.z == 0)
 	{
 		setDefaultAnimation(Idle);
 	}else
@@ -245,7 +245,7 @@ void DynamicObject::setVelocity(Ogre::Vector3 vel)
 
 void DynamicObject::setRotation(Ogre::Vector3 rot)
 {
-	Ogre::Vector3 _Rotation = rot;
+	_Motion._Rotation = rot;
 }
 
 void DynamicObject::Jump()
@@ -330,10 +330,10 @@ void DynamicObject::updateAnimation(Ogre::Real tslf)
 
 void DynamicObject::update(Ogre::Real tslf)
 {
-	_BodyNode->yaw(Ogre::Radian(_Motion._Rotation.y * 0.8 * tslf));
+	_BodyNode->yaw(Ogre::Radian(_Motion._Rotation.y * _Motion._RotationSpeed * tslf));
 
 	_BodyNode->translate(_Motion._Velocity.x * _Motion._MovementSpeed * tslf , _Motion._Velocity.y * _Motion._MovementSpeed * tslf, _Motion._Velocity.z * _Motion._MovementSpeed * tslf, Ogre::Node::TS_LOCAL);
-	
+
 	updateAnimation(tslf);
 
 	if(_Motion._Airborne)
@@ -352,4 +352,6 @@ void DynamicObject::update(Ogre::Real tslf)
 	{
 		_BodyNode->setPosition(_BodyNode->getPosition().x, TerrainManager::Instance()->getTerrainHeight(_BodyNode->getPosition().x, _BodyNode->getPosition().z) + _Height, _BodyNode->getPosition().z);
 	}
+
+	_Motion._Position = _BodyNode->getPosition();
 }

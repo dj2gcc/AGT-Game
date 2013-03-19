@@ -13,9 +13,10 @@ void Alive::Enter(Character* o)
 	_Timer = 0;
 }
 
-void Alive::Execute(Character* o, float tslf) 
+bool Alive::Execute(Character* o, float tslf) 
 { 
 	_Timer += tslf; 
+	return true;
 }
 
 
@@ -40,7 +41,7 @@ void Dead::Enter(Character* o)
 	_Timer = 0;
 }
 
-void Dead::Execute(Character* o, float tslf) 
+bool Dead::Execute(Character* o, float tslf) 
 { 
 	_Timer += tslf; 
 
@@ -48,11 +49,12 @@ void Dead::Execute(Character* o, float tslf)
 	{
 		o->getStateMachine()->ChangeState(Alive::Instance());
 	}
+	return false;
 }
 
 void Dead::Exit(Character* o) 
 {
-
+	o->getCombat()->restore();
 }
 
 bool Dead::OnMessage(Character* o, const Telegram& t) 

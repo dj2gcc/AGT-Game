@@ -43,11 +43,11 @@ void PlayerController::keyPressed( const OIS::KeyEvent& evt )
 				}else
 					if(evt.key == _LeftSide)
 					{
-						_Controlled->setVelocity(Ogre::Vector3(-1, 0, 0));
+						_Controlled->setVelocity(Ogre::Vector3(1, 0, 0));
 					}else
 						if(evt.key == _RightSide)
 						{
-							_Controlled->setVelocity(Ogre::Vector3(1, 0, 0));
+							_Controlled->setVelocity(Ogre::Vector3(-1, 0, 0));
 						}else
 							if(evt.key == _Jump)
 							{
@@ -59,11 +59,11 @@ void PlayerController::keyReleased( const OIS::KeyEvent& evt )
 {
 	if(evt.key == _Up)
 	{
-		_Controlled->setVelocity(Ogre::Vector3(0, 0, 0));
+		_Controlled->setVelocity(Ogre::Vector3(0, 0, -1));
 	}else
 		if(evt.key == _Down)
 		{
-			_Controlled->setVelocity(Ogre::Vector3(0, 0, 0));
+			_Controlled->setVelocity(Ogre::Vector3(0, 0, 1));
 		}else
 			if(evt.key == _Left)
 			{
@@ -75,11 +75,11 @@ void PlayerController::keyReleased( const OIS::KeyEvent& evt )
 				}else
 					if(evt.key == _LeftSide)
 					{
-						_Controlled->setVelocity(Ogre::Vector3(0, 0, 0));
+						_Controlled->setVelocity(Ogre::Vector3(-1, 0, 0));
 					}else
 						if(evt.key == _RightSide)
 						{
-							_Controlled->setVelocity(Ogre::Vector3(0, 0, 0));
+							_Controlled->setVelocity(Ogre::Vector3(1, 0, 0));
 						}
 }
 

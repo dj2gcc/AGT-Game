@@ -67,6 +67,10 @@ bool Character::HandleMessage(Telegram& msg)
 
 void Character::update(Ogre::Real tslf)
 {
+	
+	if(!_States->Update(tslf))
+		return;
+
 	_BodyNode->yaw(Ogre::Radian(_Motion._Rotation.y * 0.8 * tslf));
 
 	_BodyNode->translate(_Motion._Velocity.x * _Motion._MovementSpeed * tslf , _Motion._Velocity.y * _Motion._MovementSpeed * tslf, _Motion._Velocity.z * _Motion._MovementSpeed * tslf, Ogre::Node::TS_LOCAL);
@@ -90,6 +94,7 @@ void Character::update(Ogre::Real tslf)
 		_BodyNode->setPosition(_BodyNode->getPosition().x, TerrainManager::Instance()->getTerrainHeight(_BodyNode->getPosition().x, _BodyNode->getPosition().z) + _Height, _BodyNode->getPosition().z);
 	}
 
+	_Motion._Position = _BodyNode->getPosition();
+
 	_Combat->update(tslf);
-	_States->Update(tslf);
 }

@@ -87,6 +87,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ApplicationMethods.cpp" />
+    <ClCompile Include="BinPart.cpp" />
+    <ClCompile Include="BinTree.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CombatFunctionality.cpp" />
     <ClCompile Include="DynamicObject.cpp" />
@@ -114,6 +116,8 @@
   <ItemGroup>
     <ClInclude Include="ApplicationMethodBase.h" />
     <ClInclude Include="ApplicationMethods.h" />
+    <ClInclude Include="BinPart.h" />
+    <ClInclude Include="BinTree.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="CombatFunctionality.h" />

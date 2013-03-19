@@ -10,13 +10,17 @@ private:
 	Alive() : StateBase<Character>(){}
 	~Alive(){}
 
+	float _Timer;
+
 public:
 
 	static Alive* Instance();
+	
+	float getTimer(){ return _Timer; }
 
 	void Enter(Character* o);
 
-	void Execute(Character* o, float tslf);
+	bool Execute(Character* o, float tslf);
 
 	void Exit(Character* o);
 
@@ -30,13 +34,17 @@ private:
 	Dead() : StateBase<Character>(){}
 	~Dead(){}
 
+	float _Timer;
+
 public:
 
 	static Dead* Instance();
+	
+	float getTimer(){ return _Timer; }
 
 	void Enter(Character* o);
 
-	void Execute(Character* o, float tslf);
+	bool Execute(Character* o, float tslf);
 
 	void Exit(Character* o);
 

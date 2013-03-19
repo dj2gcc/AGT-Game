@@ -34,6 +34,8 @@ public:
 	void takeDamage(float power);
 	void takeHealing(float power);
 
+	void restore();
+
 	bool receiveEffect(ApplicationMethodBase* effect);
 	bool castEffect(std::string name);
 

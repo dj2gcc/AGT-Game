@@ -61,6 +61,12 @@ void CombatFunctionality::takeHealing(float healing)
 		_Attributes.hp = _Attributes.maxMp;
 }
 
+void CombatFunctionality::restore()
+{
+	_Attributes.hp = _Attributes.maxHp;
+	_Attributes.mp = _Attributes.maxMp;
+}
+
 bool CombatFunctionality::receiveEffect(ApplicationMethodBase* effect)
 {
 	_Effects.push_back(effect);

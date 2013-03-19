@@ -4,19 +4,13 @@ template <class object_type>
 
 class StateBase
 {
-protected:
-
-	float _Timer;
-
 public:
 
 	virtual ~StateBase(){}
 
-	float getTimer(){ return _Timer; }
-
 	virtual void Enter(object_type* o) {}
 
-	virtual void Execute(object_type* o, float tslf) {}
+	virtual bool Execute(object_type* o, float tslf) { return true; }
 
 	virtual void Exit(object_type* o) {}
 

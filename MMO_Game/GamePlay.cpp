@@ -1,4 +1,5 @@
 #include "GameStateManager.h"
+#include "PlayerController.h"
 
 GamePlay::GamePlay()
 {
@@ -145,6 +146,8 @@ bool GamePlay::keyPressed( const OIS::KeyEvent& evt )
 	sys.injectKeyDown(evt.key);
 	sys.injectChar(evt.text);
 
+	_World->getInControl()->keyPressed(evt);
+
 
 	if(evt.key == OIS::KC_ESCAPE)
 	{
@@ -163,6 +166,8 @@ bool GamePlay::keyPressed( const OIS::KeyEvent& evt )
 bool GamePlay::keyReleased( const OIS::KeyEvent& evt )
 {
 	CEGUI::System::getSingleton().injectKeyUp(evt.key);
+
+	_World->getInControl()->keyReleased(evt);
 
 	return true;
 }

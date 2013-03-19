@@ -29,13 +29,13 @@ public:
 	void SetPreviousState(StateBase<object_type>* s) {_PreviousState = s;}
 	void SetGlobalState(StateBase<object_type>* s) {_GlobalState = s;}
 
-	void Update(float tslf)const
+	bool Update(float tslf)const
 	{
 		if(_GlobalState)
 			_GlobalState->Execute(_Owner, tslf);
 
 		if(_CurrentState)
-			_CurrentState->Execute(_Owner, tslf);
+			return _CurrentState->Execute(_Owner, tslf);
 	}
 
 	void ChangeState(StateBase<object_type>* newState)
