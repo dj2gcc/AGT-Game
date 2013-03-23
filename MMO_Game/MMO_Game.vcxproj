@@ -121,6 +121,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="CombatFunctionality.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="DynamicObject.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Equipment.h" />

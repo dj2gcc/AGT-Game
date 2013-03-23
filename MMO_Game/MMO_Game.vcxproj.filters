@@ -218,5 +218,8 @@
     <ClInclude Include="BinTree.h">
       <Filter>AI</Filter>
     </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
