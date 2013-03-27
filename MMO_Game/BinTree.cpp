@@ -10,7 +10,7 @@ BinTree::~BinTree(void)
 	delete root;
 }
 
-void BinTree::BuildFullTree(int nbrLevels, 
+void BinTree::buildFullTree(int nbrLevels, 
 		float cX, float cY, float cZ, 
 		float sizeX, float sizeY, float sizeZ)
 {
@@ -18,14 +18,14 @@ void BinTree::BuildFullTree(int nbrLevels,
 	root->makeSubPartitions(nbrLevels);
 }
 
-void BinTree::ProcessCollisions(int &nbrTests, int &nbrCollisions)
+void BinTree::processCollisions(int &nbrTests, int &nbrCollisions)
 {
 	nbrTests = 0;
 	nbrCollisions = 0;
 	root->ProcessCollisions(nbrTests, nbrCollisions);
 }
 
-void BinTree::addObject(Object3D *obj)
+void BinTree::addObject(Event<Controller*> *obj)
 {
 	root->addObject(obj);
 }

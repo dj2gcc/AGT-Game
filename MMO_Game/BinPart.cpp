@@ -43,7 +43,7 @@ BinPart::~BinPart(void)
 		delete child[6];
 		delete child[7];
 	}
-	objects.clear();
+	_Events.clear();
 }
 
 BinPart* BinPart::getRoot()
@@ -54,14 +54,14 @@ BinPart* BinPart::getRoot()
 		return parent->getRoot();
 }
 
-bool BinPart::contains(Object3D* obj)
+bool BinPart::contains(Event<Controller*>* obj)
 {
-	float nLowX = obj->getPos().x - obj->getColRadius();
-	float nHighX = obj->getPos().x + obj->getColRadius();
-	float nLowY = obj->getPos().y - obj->getColRadius();
-	float nHighY = obj->getPos().y + obj->getColRadius();
-	float nLowZ = obj->getPos().z - obj->getColRadius();
-	float nHighZ = obj->getPos().z + obj->getColRadius();
+	float nLowX = obj->getPosition().x - obj->getRadius();
+	float nHighX = obj->getPosition().x + obj->getRadius();
+	float nLowY = obj->getPosition().y - obj->getRadius();
+	float nHighY = obj->getPosition().y + obj->getRadius();
+	float nLowZ = obj->getPosition().z - obj->getRadius();
+	float nHighZ = obj->getPosition().z + obj->getRadius();
 
 	bool result = (nLowX > lowX && nHighX < highX && 
 				nLowY > lowY && nHighY < highY &&
@@ -69,47 +69,47 @@ bool BinPart::contains(Object3D* obj)
 	return result;
 }
 
-void BinPart::addObject(Object3D *obj)
+void BinPart::addEvent(Event<Controller*> *obj)
 {
 	if(!hasChildren())
 	{
-		obj->part = this;
+		obj->_Part = this;
 		objects.push_back(obj);
 		return;
 	}
 	int p = 0;
 
-	if(obj->getPos().x < cX && obj->getPos().y < cY)
+	if(obj->getPosition().x < cX && obj->getPosition().y < cY)
 	{
-		p += (obj->getPos().z < cZ) ? 0 : 4;
+		p += (obj->getPosition().z < cZ) ? 0 : 4;
 	}else
-		if(obj->getPos().x > cX && obj->getPos().y < cY)
+		if(obj->getPosition().x > cX && obj->getPosition().y < cY)
 		{
-			p += (obj->getPos().z < cZ) ? 2 : 6;
+			p += (obj->getPosition().z < cZ) ? 2 : 6;
 		}else
-			if(obj->getPos().x < cX && obj->getPos().y > cY)
+			if(obj->getPosition().x < cX && obj->getPosition().y > cY)
 			{
-				p += (obj->getPos().z < cZ) ? 1 : 5;
+				p += (obj->getPosition().z < cZ) ? 1 : 5;
 			}else
-				if(obj->getPos().x > cX && obj->getPos().y > cY)
+				if(obj->getPosition().x > cX && obj->getPosition().y > cY)
 				{
-					p += (obj->getPos().z < cZ) ? 3 : 7;
+					p += (obj->getPosition().z < cZ) ? 3 : 7;
 				}
 
 
 	if(child[p]->contains(obj))
 	{
-		child[p]->addObject(obj);
+		child[p]->addEvent(obj);
 	}else
 	{
-		obj->part = this;
+		obj->_Part = this;
 		objects.push_back(obj);
 	}
 }
 
-void BinPart::removeObject(int id)
+void BinPart::removeEvent(int id)
 {
-	vector<Object3D*>::iterator it;
+	vector<Event<Controller*>*>::iterator it;
 	for(it = objects.begin(); it != objects.end(); ++it)
 	{
 		if((*it)->getID() == id)
@@ -118,6 +118,10 @@ void BinPart::removeObject(int id)
 			break;
 		}
 	}
+}
+
+bool BinPart::collidesWith(Event<Controller*>* eve, Character* chara)
+{
 }
 
 void BinPart::ProcessCollisions(int &nbrTests, int &nbrCollisions)
@@ -134,7 +138,7 @@ void BinPart::ProcessCollisions(int &nbrTests, int &nbrCollisions)
 		child[7]->ProcessCollisions(nbrTests, nbrCollisions);
 	}
 
-	int n = objects.size();
+	int n = _Events.size();
 	if(n >= 2)
 	{
 		for(int i = 0; i < n-1; i++)
@@ -155,8 +159,8 @@ void BinPart::ProcessCollisions(int &nbrTests, int &nbrCollisions)
 
 void BinPart::ProcessBorderCollisions(BinPart* part, int &nbrTests, int &nbrCollisions)
 {
-	int nPart = part->objects.size();
-	int n = objects.size();
+	int nPart = part->_Events.size();
+	int n = _Events.size();
 
 	if(n > 0)
 	{
@@ -165,7 +169,7 @@ void BinPart::ProcessBorderCollisions(BinPart* part, int &nbrTests, int &nbrColl
 			for(int j = 0; j < n; j++)
 			{
 				nbrTests++;
-				if(part->objects[i]->collidesWith(objects[j]))
+				if(part->_Events[i]->collidesWith(objects[j]))
 					nbrCollisions++;
 			}
 		}

@@ -1,3 +1,6 @@
+#pragma once 
+
+#include "BinPart.h"
 #include "Ogre.h"
 
 typedef void (*callback_function)(void);
@@ -8,10 +11,16 @@ class Event
 {
 private:
 
+	int _ID;
+
 	Ogre::Vector3 _Position;
 	float _Radius;
 
 	callback_function _Function;
+
+public:
+
+	BinPart* _Part;
 
 public:
 
@@ -32,4 +41,8 @@ public:
 	{
 		f(p);
 	}
+
+	Ogre::Vector3 getPosition() { return _Position; }
+	float getRadius() { return _Radius; }
+	int getID() { return _ID; }
 };
