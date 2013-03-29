@@ -114,6 +114,7 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AIController.h" />
     <ClInclude Include="ApplicationMethodBase.h" />
     <ClInclude Include="ApplicationMethods.h" />
     <ClInclude Include="BinPart.h" />

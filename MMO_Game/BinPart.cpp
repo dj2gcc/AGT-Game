@@ -54,7 +54,7 @@ BinPart* BinPart::getRoot()
 		return parent->getRoot();
 }
 
-bool BinPart::contains(Event<Controller*>* obj)
+bool BinPart::contains(Event<Character*>* obj)
 {
 	float nLowX = obj->getPosition().x - obj->getRadius();
 	float nHighX = obj->getPosition().x + obj->getRadius();
@@ -69,12 +69,12 @@ bool BinPart::contains(Event<Controller*>* obj)
 	return result;
 }
 
-void BinPart::addEvent(Event<Controller*> *obj)
+void BinPart::addEvent(Event<Character*> *obj)
 {
 	if(!hasChildren())
 	{
 		obj->_Part = this;
-		objects.push_back(obj);
+		_Events.push_back(obj);
 		return;
 	}
 	int p = 0;
@@ -103,25 +103,35 @@ void BinPart::addEvent(Event<Controller*> *obj)
 	}else
 	{
 		obj->_Part = this;
-		objects.push_back(obj);
+		_Events.push_back(obj);
 	}
 }
 
 void BinPart::removeEvent(int id)
 {
-	vector<Event<Controller*>*>::iterator it;
-	for(it = objects.begin(); it != objects.end(); ++it)
+	vector<Event<Character*>*>::iterator it;
+	for(it = _Events.begin(); it != _Events.end(); ++it)
 	{
 		if((*it)->getID() == id)
 		{
-			objects.erase(it);
+			_Events.erase(it);
 			break;
 		}
 	}
 }
 
-bool BinPart::collidesWith(Event<Controller*>* eve, Character* chara)
+bool BinPart::collidesWith(Event<Character*>* eve, Character* chara)
 {
+	// Square of distance between cube centres
+	float d2 = eve->getPosition().distance(chara->getPosition());
+	// Square of the sum of the collision radii
+	float sr2 = (eve->getRadius() + chara->getCollisionRadius()) * (eve->getRadius() + chara->getCollisionRadius());
+	// Swap velocities
+	if(d2 < sr2)
+	{
+		return true;
+	}
+	return false;
 }
 
 void BinPart::ProcessCollisions(int &nbrTests, int &nbrCollisions)
@@ -138,20 +148,24 @@ void BinPart::ProcessCollisions(int &nbrTests, int &nbrCollisions)
 		child[7]->ProcessCollisions(nbrTests, nbrCollisions);
 	}
 
-	int n = _Events.size();
-	if(n >= 2)
+	int c = _Characters.size();
+	int e = _Events.size();
+	if(e > 0 && c > 0)
 	{
-		for(int i = 0; i < n-1; i++)
+		for(int i = 0; i < e-1; i++)
 		{
-			for(int j = i+1; j < n; j++)
+			for(int j = i+1; j < c; j++)
 			{
 				nbrTests++;
-				if(objects[i]->collidesWith(objects[j]))
+				if(collidesWith(_Events[i], _Characters[j]))
+				{
+					_Events[i]->executeEvent(&_Characters[j]);
 					nbrCollisions++;
+				}
 			}
 		}
 	}
-	if(n >= 1 && parent != NULL)
+	if(e >= 1 && parent != NULL)
 	{
 		parent->ProcessBorderCollisions(this, nbrTests, nbrCollisions);
 	}
@@ -160,17 +174,20 @@ void BinPart::ProcessCollisions(int &nbrTests, int &nbrCollisions)
 void BinPart::ProcessBorderCollisions(BinPart* part, int &nbrTests, int &nbrCollisions)
 {
 	int nPart = part->_Events.size();
-	int n = _Events.size();
+	int c = _Characters.size();
 
-	if(n > 0)
+	if(c > 0)
 	{
 		for(int i = 0; i < nPart; i++)
 		{
-			for(int j = 0; j < n; j++)
+			for(int j = 0; j < c; j++)
 			{
 				nbrTests++;
-				if(part->_Events[i]->collidesWith(objects[j]))
+				if(collidesWith(part->_Events[i], _Characters[j]))
+				{
+					_Events[i]->executeEvent(&_Characters[j]);
 					nbrCollisions++;
+				}
 			}
 		}
 	}

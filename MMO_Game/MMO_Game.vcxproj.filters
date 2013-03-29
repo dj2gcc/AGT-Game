@@ -221,5 +221,8 @@
     <ClInclude Include="Event.h">
       <Filter>AI</Filter>
     </ClInclude>
+    <ClInclude Include="AIController.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

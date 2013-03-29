@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "BinPart.h"
+#include "IdManager.h"
 #include "Ogre.h"
 
 typedef void (*callback_function)(void);
@@ -26,6 +27,7 @@ public:
 
 	Event(Ogre::Vector3 p, float r)
 	{
+		_ID = IDManager->newEventID();
 		_Position = p;
 		_Radius = r;
 	}

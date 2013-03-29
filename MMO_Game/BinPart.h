@@ -12,7 +12,7 @@ private:
 	BinPart* parent;
 	BinPart* child[8];
 
-	vector<Event<Controller*>*> _Events;
+	vector<Event<Character*>*> _Events;
 	vector<Character*> _Characters;
 
 	float cX, cY, cZ;
@@ -35,13 +35,13 @@ public:
 
 	void makeSubPartitions(int nbrLevels);
 
-	void addEvent(Event<Controller*>* obj);
+	void addEvent(Event<Character*>* obj);
 
-	bool contains(Event<Controller*>* obj);
+	bool contains(Event<Character*>* obj);
 
 	void removeEvent(int id);
 
-	bool collidesWith(Event<Controller*>* eve, Character* chara);
+	bool collidesWith(Event<Character*>* eve, Character* chara);
 
 	void ProcessCollisions(int &nbrTests, int &nbrCollisions);
 

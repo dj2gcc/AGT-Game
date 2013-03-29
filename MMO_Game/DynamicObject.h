@@ -65,6 +65,8 @@ public:
 
 	Ogre::AnimationState* AdditionalAnimation() const{ return _AdditionalAnimation; }
 	Ogre::AnimationState* DefaultAnimation() const{ return _DefaultAnimation; }
+	Ogre::Vector3 getPosition() { return _BodyNode->getPosition(); }
+	Ogre::Real getCollisionRadius() { return _Body->getBoundingRadius(); }
 
 	void fitCamera(Ogre::Camera* c);
 
