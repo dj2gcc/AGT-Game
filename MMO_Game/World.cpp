@@ -3,6 +3,7 @@
 
 #include "Equipment.h"
 #include "PlayerController.h"
+#include "AIController.h"
 
 World* World::Instance()
 {
@@ -17,7 +18,7 @@ void World::populate()
 	_Population.at(0)->getControlled()->fitCamera(OgreManager::Instance()->getCamera());
 	_InControl = _Population.at(0);
 
-	_Population.push_back(new PlayerController(new Character("sinbad.mesh", "Enemy")));
+	_Population.push_back(new AIController(new Character("sinbad.mesh", "Enemy")));
 
 	_Population.at(0)->getControlled()->getCombat()->learnSpell(new Attack());
 	_Population.at(0)->getControlled()->getCombat()->learnSpell(new Pain());

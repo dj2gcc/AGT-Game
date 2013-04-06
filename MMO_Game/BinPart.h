@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Event.h"
 #include "Controller.h"
 
@@ -12,7 +11,7 @@ private:
 	BinPart* parent;
 	BinPart* child[8];
 
-	vector<Event<Character*>*> _Events;
+	vector<Event*> _Events;
 	vector<Character*> _Characters;
 
 	float cX, cY, cZ;
@@ -35,13 +34,13 @@ public:
 
 	void makeSubPartitions(int nbrLevels);
 
-	void addEvent(Event<Character*>* obj);
+	void addEvent(Event* obj);
 
-	bool contains(Event<Character*>* obj);
+	bool contains(Event* obj);
 
 	void removeEvent(int id);
 
-	bool collidesWith(Event<Character*>* eve, Character* chara);
+	bool collidesWith(Event* eve, Character* chara);
 
 	void ProcessCollisions(int &nbrTests, int &nbrCollisions);
 

@@ -17,5 +17,5 @@ public:
 
 	void processCollisions(int &nbrTests, int &nbrCollisions);
 
-	void addObject(Event<Controller*>* obj);
+	void addObject(Event* obj);
 };

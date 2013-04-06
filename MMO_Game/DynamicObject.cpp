@@ -228,9 +228,22 @@ void DynamicObject::fitCamera(Ogre::Camera* c)
 void DynamicObject::setDirection(Ogre::Vector3 dir)
 {
 	_Motion._Facing = dir;
+	_BodyNode->setDirection(dir);
+}
+void DynamicObject::setVelocity(Ogre::Vector3 vel)
+{
+	_Motion._Velocity = vel;
+
+	if(_Motion._Velocity.x == 0 && _Motion._Velocity.y == 0 && _Motion._Velocity.z == 0)
+	{
+		setDefaultAnimation(Idle);
+	}else
+	{
+		setDefaultAnimation(Run);
+	}
 }
 
-void DynamicObject::setVelocity(Ogre::Vector3 vel)
+void DynamicObject::adjustVelocity(Ogre::Vector3 vel)
 {
 	_Motion._Velocity += vel;
 

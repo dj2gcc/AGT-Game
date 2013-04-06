@@ -49,6 +49,7 @@ public:
 	virtual ~DynamicObject();
 
 	void setDirection(Ogre::Vector3 dir);
+	void adjustVelocity(Ogre::Vector3 vel);
 	void setVelocity(Ogre::Vector3 vel);
 	void setRotation(Ogre::Vector3 rot);
 	void Jump();
@@ -67,6 +68,7 @@ public:
 	Ogre::AnimationState* DefaultAnimation() const{ return _DefaultAnimation; }
 	Ogre::Vector3 getPosition() { return _BodyNode->getPosition(); }
 	Ogre::Real getCollisionRadius() { return _Body->getBoundingRadius(); }
+	Physics getPhysics() { return _Motion; }
 
 	void fitCamera(Ogre::Camera* c);
 

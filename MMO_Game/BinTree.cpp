@@ -25,7 +25,7 @@ void BinTree::processCollisions(int &nbrTests, int &nbrCollisions)
 	root->ProcessCollisions(nbrTests, nbrCollisions);
 }
 
-void BinTree::addObject(Event<Controller*> *obj)
+void BinTree::addObject(Event *obj)
 {
-	root->addObject(obj);
+	//root->addEvent(obj);
 }

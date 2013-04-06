@@ -105,6 +105,9 @@
     <ClCompile Include="BinTree.cpp">
       <Filter>AI</Filter>
     </ClCompile>
+    <ClCompile Include="AIController.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">

@@ -1,4 +1,5 @@
 #include"SteeringBehaviours.h"
+#include "Character.h"
 
 float SteeringBehaviours::RandomClamped()
 {		
@@ -29,10 +30,10 @@ Ogre::Vector3 SteeringBehaviours::_Wander(Physics o)
 
 Ogre::Vector3 SteeringBehaviours::_Patrol(Physics o, float tslf)
 {
-	Ogre::Vector3 difference = Ogre::Vector3(o._Position.x - _PatrolPoints[_NextPoint].x, o._Position.y - _PatrolPoints[_NextPoint].y, 0);
+	Ogre::Vector3 difference = Ogre::Vector3(o._Position.x - _PatrolPoints[_NextPoint].x, 0, o._Position.z - _PatrolPoints[_NextPoint].z);
 	Ogre::Vector3 distance = difference * difference;
 
-	if(distance.x + distance.y <= 100)
+	if(distance.x + distance.y <= 10000)
 	{
 		_Break += tslf;
 
@@ -44,12 +45,12 @@ Ogre::Vector3 SteeringBehaviours::_Patrol(Physics o, float tslf)
 		}
 	}
 
-	if(abs(difference.x) >= abs(difference.y))
+	if(abs(difference.x) >= abs(difference.z))
 	{
-		return Ogre::Vector3(difference.x / difference.x, difference.y / difference.x, 0);
+		return Ogre::Vector3(difference.x / difference.x, 0, difference.z / difference.x);
 	}else
 	{
-		return Ogre::Vector3(difference.x / difference.y, difference.y / difference.y, 0);
+		return Ogre::Vector3(difference.x / difference.z, 0, difference.z / difference.z);
 	}
 }
 
@@ -58,12 +59,11 @@ SteeringBehaviours::SteeringBehaviours(Ogre::Vector3 pos)
 	_Flags &= 0x00;
 	srand(time(0));
 
-	Ogre::Vector3 _PatrolPoints[5];
-	_PatrolPoints[0] = Ogre::Vector3(pos.x + rangedRandom(-300, 300), pos.y + rangedRandom(-400, -400), 0);
-	_PatrolPoints[1] = Ogre::Vector3(pos.x + rangedRandom(-500, 500), pos.y + rangedRandom(-300, -300), 0);
-	_PatrolPoints[2] = Ogre::Vector3(pos.x + rangedRandom(-600, 600), pos.y + rangedRandom(-600, -600), 0);
-	_PatrolPoints[3] = Ogre::Vector3(pos.x + rangedRandom(-100, 100), pos.y + rangedRandom(-100, -100), 0);
-	_PatrolPoints[4] = Ogre::Vector3(pos.x + rangedRandom(-400, 400), pos.y + rangedRandom(-400, -400), 0);
+	_PatrolPoints[0] = Ogre::Vector3(pos.x + rangedRandom(-3000, 3000), 0, pos.y + rangedRandom(-4000, -4000));
+	_PatrolPoints[1] = Ogre::Vector3(pos.x + rangedRandom(-5000, 5000), 0, pos.y + rangedRandom(-3000, -3000));
+	_PatrolPoints[2] = Ogre::Vector3(pos.x + rangedRandom(-6000, 6000), 0, pos.y + rangedRandom(-6000, -6000));
+	_PatrolPoints[3] = Ogre::Vector3(pos.x + rangedRandom(-1000, 1000), 0, pos.y + rangedRandom(-1000, -1000));
+	_PatrolPoints[4] = Ogre::Vector3(pos.x + rangedRandom(-4000, 4000), 0, pos.y + rangedRandom(-4000, -4000));
 	_NextPoint = 1;
 	_Break = 0.0f;
 	_BreakTime = 5;
@@ -78,15 +78,16 @@ void SteeringBehaviours::convertToWorld(Physics &o)
 
 }
 
-void SteeringBehaviours::steer(Physics &o, float tslf)
+void SteeringBehaviours::steer(Character* o, float tslf)
 {
 	if(_Flags & WANDER)
 	{
-		o._Facing =  _Wander(o);
-	}
-
-	if(_Flags & PATROL)
-	{
-		o._Facing = _Patrol(o, tslf);
-	}
+		o->setDirection(_Wander(o->getPhysics()));
+		o->setVelocity(Ogre::Vector3(0, 0, 0.2));
+	}else
+		if(_Flags & PATROL)
+		{
+			o->setDirection(_Patrol(o->getPhysics(), tslf));
+			o->setVelocity(Ogre::Vector3(0, 0, 0.2));
+		}
 }

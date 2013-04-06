@@ -3,6 +3,8 @@
 #include"Structs.h"
 #include"Ogre.h"
 
+class Character;
+
 #define WANDER 0x01
 #define PATROL 0x02
 
@@ -36,5 +38,5 @@ public:
 
 	void convertToWorld(Physics &o);
 
-	void steer(Physics &o, float tslf);
+	void steer(Character* o, float tslf);
 };
