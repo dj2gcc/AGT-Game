@@ -71,7 +71,10 @@ void Character::update(Ogre::Real tslf)
 	if(!_States->Update(tslf))
 		return;
 
-	_BodyNode->yaw(Ogre::Radian(_Motion._Rotation.y * 0.8 * tslf));
+	Ogre::Radian rotation = Ogre::Radian(_Motion._Rotation.y * 0.8 * tslf);
+	Ogre::Vector3 translate = Ogre::Vector3(_Motion._Velocity.x * _Motion._MovementSpeed * tslf , _Motion._Velocity.y * _Motion._MovementSpeed * tslf, _Motion._Velocity.z * _Motion._MovementSpeed * tslf);
+
+	_BodyNode->yaw(rotation);
 
 	_BodyNode->translate(_Motion._Velocity.x * _Motion._MovementSpeed * tslf , _Motion._Velocity.y * _Motion._MovementSpeed * tslf, _Motion._Velocity.z * _Motion._MovementSpeed * tslf, Ogre::Node::TS_LOCAL);
 	

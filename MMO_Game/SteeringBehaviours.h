@@ -11,11 +11,10 @@ class Character;
 class SteeringBehaviours
 {
 private:
-
 	char _Flags;
 
 	Ogre::Vector3 _Wander(Physics o);
-	Ogre::Vector3 _Patrol(Physics o, float tslf);
+	void _Patrol(Character* o, float tslf);
 
 	Ogre::Vector3 _PatrolPoints[5];
 	int _NextPoint;

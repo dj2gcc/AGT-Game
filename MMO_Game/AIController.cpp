@@ -11,6 +11,10 @@ AIController::~AIController()
 {
 }
 
+void aggro(Character* c)
+{
+}
+
 void AIController::update(Ogre::Real tslf)
 {
 	_Steering->steer(_Controlled, tslf);

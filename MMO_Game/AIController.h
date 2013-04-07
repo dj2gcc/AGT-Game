@@ -14,5 +14,7 @@ public:
 	AIController(Character* object);
 	~AIController();
 
+	void aggro(Character* c);
+
 	void update(Ogre::Real tslf);
 };

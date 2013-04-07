@@ -1,6 +1,6 @@
 #pragma once
 #include "Event.h"
-#include "Controller.h"
+#include "AIController.h"
 
 #include <vector>
 using namespace std;
@@ -11,7 +11,7 @@ private:
 	BinPart* parent;
 	BinPart* child[8];
 
-	vector<Event*> _Events;
+	vector<Event<AIController*>*> _Events;
 	vector<Character*> _Characters;
 
 	float cX, cY, cZ;
@@ -34,13 +34,13 @@ public:
 
 	void makeSubPartitions(int nbrLevels);
 
-	void addEvent(Event* obj);
+	void addEvent(Event<AIController*>* obj);
 
-	bool contains(Event* obj);
+	bool contains(Event<AIController*>* obj);
 
 	void removeEvent(int id);
 
-	bool collidesWith(Event* eve, Character* chara);
+	bool collidesWith(Event<AIController*>* eve, Character* chara);
 
 	void ProcessCollisions(int &nbrTests, int &nbrCollisions);
 

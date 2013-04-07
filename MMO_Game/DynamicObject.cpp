@@ -228,7 +228,7 @@ void DynamicObject::fitCamera(Ogre::Camera* c)
 void DynamicObject::setDirection(Ogre::Vector3 dir)
 {
 	_Motion._Facing = dir;
-	_BodyNode->setDirection(dir);
+	_BodyNode->setDirection(dir, Ogre::Node::TS_WORLD);
 }
 void DynamicObject::setVelocity(Ogre::Vector3 vel)
 {
