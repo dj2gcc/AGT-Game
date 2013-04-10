@@ -2,10 +2,13 @@
 
 #include"BinPart.h"
 
+const int NUM_OF_LEVELS = 4;
+
 class BinTree
 {
-public:
-	BinPart* root;
+private:
+
+	static BinTree* _Instance;
 
 	BinTree(void);
 
@@ -15,7 +18,14 @@ public:
 		float cX, float cY, float cZ, 
 		float sizeX, float sizeY, float sizeZ);
 
+public:
+	BinPart* root;
+
+	static BinTree* Instance();
+
 	void processCollisions(int &nbrTests, int &nbrCollisions);
 
-	void addObject(Event<AIController*>* obj);
+	void addObject(Event* obj);
 };
+
+#define Tree BinTree::Instance()

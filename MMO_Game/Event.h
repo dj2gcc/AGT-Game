@@ -2,10 +2,11 @@
 #include "IdManager.h"
 #include "Ogre.h"
 #include "Character.h"
+#include "AIController.h"
+
+#include "Delegates.h"
 
 class BinPart;
-
-template <class T>
 
 class Event
 {
@@ -14,23 +15,21 @@ private:
 	int _ID;
 
 	Ogre::Vector3* _Position;
-	float _Radius;
+	float _Radius;	
 
-	T* _Owner;
-	void (T::*_Funct) (Character* c);
-	
+	CDelegate1<Character*> _Functor;
+
 
 public:
 
 	BinPart* _Part;
 
-	Event(Ogre::Vector3* p, float r,T* owner, void (T::*f)(Character* c))
+	Event(Ogre::Vector3* p, float r, CDelegate1<Character*> f)
 	{
 		_ID = IDManager->newEventID();
 		_Position = p;
 		_Radius = r;
-		_Funct = f;
-		_Owner = owner;
+		_Functor = f;
 	}
 
 	~Event()
@@ -39,7 +38,7 @@ public:
 
 	void executeEvent(Character* p)
 	{
-		(_Owner->_Funct)(p);
+		_Functor(p);
 	}
 
 	Ogre::Vector3 getPosition() { return *_Position; }

@@ -3,11 +3,22 @@
 BinTree::BinTree(void)
 {
 	root = NULL;
+	buildFullTree(NUM_OF_LEVELS, 0, 0, 0,0, 0, 0);
 }
 
 BinTree::~BinTree(void)
 {
 	delete root;
+}
+
+BinTree* BinTree::Instance()
+{
+	if(!_Instance)
+	{
+		_Instance = new BinTree();
+	}
+
+	return _Instance;
 }
 
 void BinTree::buildFullTree(int nbrLevels, 
@@ -25,7 +36,7 @@ void BinTree::processCollisions(int &nbrTests, int &nbrCollisions)
 	root->ProcessCollisions(nbrTests, nbrCollisions);
 }
 
-void BinTree::addObject(Event<AIController*> *obj)
+void BinTree::addObject(Event *obj)
 {
-	//root->addEvent(obj);
+	root->addEvent(obj);
 }

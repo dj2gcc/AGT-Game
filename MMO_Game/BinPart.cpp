@@ -53,7 +53,7 @@ BinPart* BinPart::getRoot()
 		return parent->getRoot();
 }
 
-bool BinPart::contains(Event<AIController*>* obj)
+bool BinPart::contains(Event* obj)
 {
 	float nLowX = obj->getPosition().x - obj->getRadius();
 	float nHighX = obj->getPosition().x + obj->getRadius();
@@ -68,7 +68,7 @@ bool BinPart::contains(Event<AIController*>* obj)
 	return result;
 }
 
-void BinPart::addEvent(Event<AIController*>* obj)
+void BinPart::addEvent(Event* obj)
 {
 	if(!hasChildren())
 	{
@@ -108,7 +108,7 @@ void BinPart::addEvent(Event<AIController*>* obj)
 
 void BinPart::removeEvent(int id)
 {
-	vector<Event<AIController*>*>::iterator it;
+	vector<Event*>::iterator it;
 	for(it = _Events.begin(); it != _Events.end(); ++it)
 	{
 		if((*it)->getID() == id)
@@ -119,7 +119,7 @@ void BinPart::removeEvent(int id)
 	}
 }
 
-bool BinPart::collidesWith(Event<AIController*>* eve, Character* chara)
+bool BinPart::collidesWith(Event* eve, Character* chara)
 {
 	// Square of distance between cube centres
 	float d2 = eve->getPosition().distance(chara->getPosition());
