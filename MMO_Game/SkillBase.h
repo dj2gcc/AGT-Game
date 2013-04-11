@@ -19,6 +19,8 @@ protected:
 
 	double _Applied;
 
+	double _Range;
+
 public:
 
 	
@@ -31,6 +33,7 @@ public:
 	int getDamage() { return _Damage; }
 	float getDuration() { return _Duration; }
 	float getCast() { return _Cast; }
+	double getRange() { return _Range; }
 
 	virtual void calculateDamage(Stats attributes) = 0;
 

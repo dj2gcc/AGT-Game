@@ -18,6 +18,8 @@ Attack::Attack()
 	_Progress = 0;
 
 	_Applied = Time->Global();
+
+	_Range = 100;
 }
 
 Attack::Attack(Attack& a)
@@ -57,6 +59,8 @@ Pain::Pain()
 	_Progress = 0;
 
 	_Applied = Time->Global();
+
+	_Range = 1000;
 }
 
 Pain::Pain(Pain& a)
@@ -96,6 +100,8 @@ Heal::Heal()
 	_Progress = 0;
 
 	_Applied = Time->Global();
+
+	_Range = 500;
 }
 
 Heal::Heal(Heal& a)
@@ -135,6 +141,8 @@ StaminaBuff::StaminaBuff()
 	_Progress = 0;
 
 	_Applied = Time->Global();
+
+	_Range = 100;
 }
 
 StaminaBuff::StaminaBuff(StaminaBuff& a)
@@ -174,6 +182,8 @@ PowerDebuff::PowerDebuff()
 	_Progress = 0;
 
 	_Applied = Time->Global();
+
+	_Range = 100;
 }
 
 PowerDebuff::PowerDebuff(PowerDebuff& a)
@@ -213,6 +223,8 @@ Tick::Tick()
 	_Progress = 0;
 
 	_Applied = Time->Global();
+
+	_Range = 9999999999;
 }
 
 Tick::Tick(Tick& a)

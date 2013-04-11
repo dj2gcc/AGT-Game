@@ -31,6 +31,8 @@ public:
 	ApplicationMethodBase* getCast();
 	float getCastProgress();
 
+	bool checkInRange(double r);
+
 	void takeDamage(float power);
 	void takeHealing(float power);
 

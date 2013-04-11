@@ -11,6 +11,8 @@ BinTree::~BinTree(void)
 	delete root;
 }
 
+BinTree* BinTree::_Instance = NULL;
+
 BinTree* BinTree::Instance()
 {
 	if(!_Instance)

@@ -38,6 +38,23 @@ float CombatFunctionality::getCastProgress()
 	}
 }
 
+bool CombatFunctionality::checkInRange(double r)
+{
+	if(!_Parent->_Target)
+		return false;
+
+	Ogre::Vector3 difference = _Parent->getPosition() - _Parent->_Target->getPosition();
+	double distance = sqrt((difference.x * difference.x) + (difference.z * difference.z));
+
+	if(distance < r)
+	{
+		return true;
+	}else
+	{
+		return false;
+	}
+}
+
 void CombatFunctionality::takeDamage(float damage)
 {
 	if((damage - _Attributes.defense) < 0)
@@ -81,6 +98,9 @@ bool CombatFunctionality::castEffect(std::string name)
 		{
 			if((*_sb)->getName() == name)
 			{
+				if(!checkInRange((*_sb)->getRange()))
+					return false;
+
 				(*_sb)->calculateDamage(_Attributes);
 				(*_sb)->setProgress(0.0f);
 				if((*_sb)->getType() == "Dot")
