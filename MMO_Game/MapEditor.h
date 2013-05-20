@@ -38,6 +38,8 @@ private:
 
 	int slotSize;
 
+	std::string _ChangeState;
+
 public:
 
 	MapEditor();

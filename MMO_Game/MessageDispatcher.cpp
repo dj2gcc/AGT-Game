@@ -1,5 +1,5 @@
 #include "MessageDispatcher.h"
-#include "Character.h"
+#include "Controller.h"
 
 
 MessageDispatcher* MessageDispatcher::Instance()
@@ -9,7 +9,7 @@ MessageDispatcher* MessageDispatcher::Instance()
   return &instance;
 }
 
-void MessageDispatcher::_Discharge(Character *receiver,Telegram& msg)
+void MessageDispatcher::_Discharge(Controller *receiver,Telegram& msg)
 {
   if (!receiver->HandleMessage(msg))
   {
@@ -19,8 +19,8 @@ void MessageDispatcher::_Discharge(Character *receiver,Telegram& msg)
 
 void MessageDispatcher::DispatchMessage(double delay, int sender, int receiver, std::string type, void* message)
 {
-  Character* pSender   = _World->getCharacter(sender);
-  Character* pReceiver = _World->getCharacter(receiver);
+  Controller* pSender   = _World->getController(sender);
+  Controller* pReceiver = _World->getController(receiver);
 
   if (pReceiver == NULL)
   {
@@ -51,7 +51,7 @@ void MessageDispatcher::DispatchDelayedMessages()
   {
     Telegram msg = *_PriorityQ.begin();
 
-    Character* pReceiver = _World->getCharacter(msg.receiver);
+    Controller* pReceiver = _World->getController(msg.receiver);
 
     _Discharge(pReceiver, msg);
 

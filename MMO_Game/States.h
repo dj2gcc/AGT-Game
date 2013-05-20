@@ -7,7 +7,7 @@ class Alive : public StateBase<Character>
 {
 private:
 	
-	Alive() : StateBase<Character>(){}
+	Alive() : StateBase<Character>(){ _Name = "Alive"; }
 	~Alive(){}
 
 	float _Timer;
@@ -31,7 +31,7 @@ class Dead : public StateBase<Character>
 {
 private:
 	
-	Dead() : StateBase<Character>(){}
+	Dead() : StateBase<Character>(){ _Name = "Dead"; }
 	~Dead(){}
 
 	float _Timer;

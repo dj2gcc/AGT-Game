@@ -36,6 +36,8 @@ private:
 
 	//World* _World;
 
+	std::string _ChangeState;
+
 public:
 
 	GamePlay();

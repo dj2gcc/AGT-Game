@@ -8,11 +8,24 @@ class Attack : public SkillBase
 public:
 
 	Attack();
-	Attack(Attack& a);
+	Attack(SkillBase* a)
+	{
+		_Type = a->getType();
+		_Name = a->getName();
+		_BaseDamage = a->getBaseDamage();
+		_Damage = a->getDamage();
+		_Cast = a->getCast();
+		_Duration = a->getDuration();
+		_Progress = a->getProgress();
+		_Applied = a->getApplied();
+		_Range = a->getRange();
+	}
 	~Attack();
 
 	void calculateDamage(Stats attributes);
 	void updateProgress(float time);
+
+	SkillBase* getCopy(SkillBase* s);
 };
 
 class Pain : public SkillBase
@@ -20,11 +33,24 @@ class Pain : public SkillBase
 public:
 
 	Pain();
-	Pain(Pain& a);
+	Pain(SkillBase* a)
+	{
+		_Type = a->getType();
+		_Name = a->getName();
+		_BaseDamage = a->getBaseDamage();
+		_Damage = a->getDamage();
+		_Cast = a->getCast();
+		_Duration = a->getDuration();
+		_Progress = a->getProgress();
+		_Applied = a->getApplied();
+		_Range = a->getRange();
+	}
 	~Pain();
 
 	void calculateDamage(Stats attributes);
 	void updateProgress(float time);
+
+	SkillBase* getCopy(SkillBase* s);
 };
 
 class Heal : public SkillBase
@@ -32,11 +58,24 @@ class Heal : public SkillBase
 public:
 
 	Heal();
-	Heal(Heal& a);
+	Heal(SkillBase* a)
+	{
+		_Type = a->getType();
+		_Name = a->getName();
+		_BaseDamage = a->getBaseDamage();
+		_Damage = a->getDamage();
+		_Cast = a->getCast();
+		_Duration = a->getDuration();
+		_Progress = a->getProgress();
+		_Applied = a->getApplied();
+		_Range = a->getRange();
+	}
 	~Heal();
 
 	void calculateDamage(Stats attributes);
 	void updateProgress(float time);
+
+	SkillBase* getCopy(SkillBase* s);
 };
 
 class StaminaBuff : public SkillBase
@@ -44,11 +83,24 @@ class StaminaBuff : public SkillBase
 public:
 
 	StaminaBuff();
-	StaminaBuff(StaminaBuff& a);
+	StaminaBuff(SkillBase* a)
+	{
+		_Type = a->getType();
+		_Name = a->getName();
+		_BaseDamage = a->getBaseDamage();
+		_Damage = a->getDamage();
+		_Cast = a->getCast();
+		_Duration = a->getDuration();
+		_Progress = a->getProgress();
+		_Applied = a->getApplied();
+		_Range = a->getRange();
+	}
 	~StaminaBuff();
 
 	void calculateDamage(Stats attributes);
 	void updateProgress(float time);
+
+	SkillBase* getCopy(SkillBase* s);
 };
 
 class PowerDebuff : public SkillBase
@@ -56,11 +108,24 @@ class PowerDebuff : public SkillBase
 public:
 
 	PowerDebuff();
-	PowerDebuff(PowerDebuff& a);
+	PowerDebuff(SkillBase* a)
+	{
+		_Type = a->getType();
+		_Name = a->getName();
+		_BaseDamage = a->getBaseDamage();
+		_Damage = a->getDamage();
+		_Cast = a->getCast();
+		_Duration = a->getDuration();
+		_Progress = a->getProgress();
+		_Applied = a->getApplied();
+		_Range = a->getRange();
+	}
 	~PowerDebuff();
 
 	void calculateDamage(Stats attributes);
 	void updateProgress(float time);
+
+	SkillBase* getCopy(SkillBase* s);
 };
 
 class Tick : public SkillBase
@@ -68,10 +133,23 @@ class Tick : public SkillBase
 public:
 
 	Tick();
-	Tick(Tick& a);
+	Tick(SkillBase* a)
+	{
+		_Type = a->getType();
+		_Name = a->getName();
+		_BaseDamage = a->getBaseDamage();
+		_Damage = a->getDamage();
+		_Cast = a->getCast();
+		_Duration = a->getDuration();
+		_Progress = a->getProgress();
+		_Applied = a->getApplied();
+		_Range = a->getRange();
+	}
 	~Tick();
 
 	void calculateDamage(Stats attributes){}
 	void setPower(int p);
 	void updateProgress(float time);
+
+	SkillBase* getCopy(SkillBase* s);
 };

@@ -39,6 +39,17 @@ Dead* Dead::Instance()
 void Dead::Enter(Character* o) 
 {
 	_Timer = 0;
+
+	if(o->getName() == "Enemy")
+	{
+		o->setPosition(Ogre::Vector3(o->getStartPosition().x, o->getStartPosition().y - 6000, o->getStartPosition().z));
+	}else
+		if(o->getName() == "Player")
+		{
+			o->setPosition(o->getStartPosition());
+			_Timer = 60;
+			_World->resetAllTargets();
+		}
 }
 
 bool Dead::Execute(Character* o, float tslf) 
@@ -47,6 +58,11 @@ bool Dead::Execute(Character* o, float tslf)
 
 	if(_Timer >= 60)
 	{
+		if(o->getName() == "Enemy")
+		{
+			o->setPosition(o->getStartPosition());
+		}
+
 		o->getStateMachine()->ChangeState(Alive::Instance());
 	}
 	return false;

@@ -2,7 +2,7 @@
 #include "TerrainManager.h"
 
 
-Character::Character(Ogre::String mesh, std::string name) : DynamicObject(mesh)
+Character::Character(Ogre::String mesh, std::string name, Ogre::Vector3 p) : DynamicObject(mesh, p)
 {
 	_Name = name;
 	_Combat = new CombatFunctionality(this);
@@ -16,6 +16,8 @@ Character::Character(Ogre::String mesh, std::string name) : DynamicObject(mesh)
 	_Exp = 0;
 	_ExpToLvl = 100;
 	_Level = 1;
+
+	_StartPosition = p;
 }
 
 Character::~Character()
@@ -61,6 +63,11 @@ bool Character::HandleMessage(Telegram& msg)
 				_Exp = 0;
 				_Level++;
 			}
+
+			if(msg.sender == _Target->getID())
+			{
+				_Target = NULL;
+			}
 		}
 	return true;
 }
@@ -76,9 +83,18 @@ void Character::update(Ogre::Real tslf)
 
 	_BodyNode->yaw(rotation);
 
+	Ogre::Vector3 temp = _BodyNode->getPosition();
+
 	_BodyNode->translate(_Motion._Velocity.x * _Motion._MovementSpeed * tslf , _Motion._Velocity.y * _Motion._MovementSpeed * tslf, _Motion._Velocity.z * _Motion._MovementSpeed * tslf, Ogre::Node::TS_LOCAL);
 	
+	if(_BodyNode->getPosition().x > 5999 || _BodyNode->getPosition().x < -5999 || _BodyNode->getPosition().z > 5999 || _BodyNode->getPosition().z < -5999)
+	{
+		_BodyNode->setPosition(temp);
+	}
+
 	updateAnimation(tslf);
+
+	float difference = _BodyNode->getPosition().y;
 
 	if(_Motion._Airborne)
 	{
@@ -95,6 +111,12 @@ void Character::update(Ogre::Real tslf)
 	}else
 	{
 		_BodyNode->setPosition(_BodyNode->getPosition().x, TerrainManager::Instance()->getTerrainHeight(_BodyNode->getPosition().x, _BodyNode->getPosition().z) + _Height, _BodyNode->getPosition().z);
+		difference = _BodyNode->getPosition().y - difference;
+
+		if(difference > 10)
+		{
+			_BodyNode->setPosition(temp);
+		}
 	}
 
 	_Motion._Position = _BodyNode->getPosition();

@@ -105,27 +105,27 @@ bool CombatFunctionality::castEffect(std::string name)
 				(*_sb)->setProgress(0.0f);
 				if((*_sb)->getType() == "Dot")
 				{
-					_Casting = new Dot((*_sb), _Parent->getID());
+					_Casting = new Dot((*_sb)->getCopy(*_sb), _Parent->getID());
 				}else
-					if((*_sb)->getType() == "Hot")
+					if((*_sb)->getType() == "Hot" && _Parent->_Target->getID() == _Parent->getID())
 					{
-						_Casting = new Hot((*_sb), _Parent->getID());
+						_Casting = new Hot((*_sb)->getCopy(*_sb), _Parent->getID());
 					}else
 						if((*_sb)->getType() == "Buff")
 						{
-							_Casting = new Buff((*_sb), _Parent->getID());
+							_Casting = new Buff((*_sb)->getCopy(*_sb), _Parent->getID());
 						}else
 							if((*_sb)->getType() == "Debuff")
 							{
-								_Casting = new Debuff((*_sb), _Parent->getID());
+								_Casting = new Debuff((*_sb)->getCopy(*_sb), _Parent->getID());
 							}else
 								if((*_sb)->getType() == "Channeling")
 								{
-									_Casting = new Channeling((*_sb), _Parent->getID());
+									_Casting = new Channeling((*_sb)->getCopy(*_sb), _Parent->getID());
 								}else
 									if((*_sb)->getType() == "Instant")
 									{
-										_Casting = new Instant((*_sb), _Parent->getID());
+										_Casting = new Instant((*_sb)->getCopy(*_sb), _Parent->getID());
 									}
 				return true;
 			}
@@ -166,6 +166,7 @@ void CombatFunctionality::update(float tslf)
 			}
 		}else
 		{
+			delete _Casting;
 			_Casting = NULL;
 			_CastProgress = 0;
 		}

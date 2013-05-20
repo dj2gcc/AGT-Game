@@ -10,6 +10,7 @@
 #include "CombatFunctionality.h"
 #include "Inventory.h"
 
+
 class Character : public DynamicObject
 {
 protected:
@@ -24,10 +25,13 @@ protected:
 
 	int _Exp, _ExpToLvl, _Level;
 
+	Ogre::Vector3 _StartPosition;
+
 public:
+
 	Character* _Target;
 
-	Character(Ogre::String mesh, std::string name);
+	Character(Ogre::String mesh, std::string name, Ogre::Vector3 p);
 	~Character();
 
 	bool Equip(Equipment* e);
@@ -41,6 +45,7 @@ public:
 	int getLevel() { return _Level; }
 	int getExp() { return _Exp; }
 	int getExpToLvl() { return _ExpToLvl; }
+	Ogre::Vector3 getStartPosition() { return _StartPosition; }
 
 	void update(Ogre::Real tslf);
 };

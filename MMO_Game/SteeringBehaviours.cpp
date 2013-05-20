@@ -70,6 +70,50 @@ void SteeringBehaviours::_Patrol(Character* o, float tslf)
 	}
 }
 
+void SteeringBehaviours::_Chase(Character* o)
+{
+	if(!_ChaseTarget)
+		return;
+
+	Ogre::Vector3 difference = Ogre::Vector3(o->getPhysics()._Position.x - _ChaseTarget->getPosition().x, 0, o->getPhysics()._Position.z - _ChaseTarget->getPosition().z);
+	double distance = sqrt((difference.x * difference.x) + (difference.z * difference.z));
+
+	if(distance <= _Range)
+	{
+		o->setVelocity(Ogre::Vector3(0,0,0));
+		return;
+	}else
+	{
+		o->setVelocity(Ogre::Vector3(0, 0, 0.2));
+
+		if(abs(difference.x) >= abs(difference.z))
+		{
+			if(difference.x < 0)
+			{
+				o->setDirection(Ogre::Vector3(difference.x / (difference.x * -1), 0, difference.z / (difference.x * -1)));
+			}else
+			{
+				o->setDirection(Ogre::Vector3(difference.x / difference.x, 0, difference.z / difference.x));
+			}
+		}else
+		{
+			if(difference.z < 0)
+			{
+				o->setDirection(Ogre::Vector3(difference.x / (difference.z * -1), 0, difference.z / (difference.z * -1)));
+			}else
+			{
+				o->setDirection(Ogre::Vector3(difference.x / difference.z, 0, difference.z / difference.z));
+			}
+		}
+	}
+}
+
+void SteeringBehaviours::setChaseData(Character* tar, double r)
+{
+	_ChaseTarget = tar;
+	_Range = r > 0 ? r : 10;
+}
+
 SteeringBehaviours::SteeringBehaviours(Ogre::Vector3 pos)
 {
 	_Flags &= 0x00;
@@ -83,6 +127,9 @@ SteeringBehaviours::SteeringBehaviours(Ogre::Vector3 pos)
 	_NextPoint = 1;
 	_Break = 0.0f;
 	_BreakTime = 3;
+
+	_ChaseTarget = NULL;
+	_Range = 100;
 }
 
 SteeringBehaviours::~SteeringBehaviours()
@@ -96,6 +143,11 @@ void SteeringBehaviours::convertToWorld(Physics &o)
 
 void SteeringBehaviours::steer(Character* o, float tslf)
 {
+	if(_Flags & CHASE)
+	{
+		_Chase(o);
+	}
+
 	if(_Flags & WANDER)
 	{
 		o->setDirection(_Wander(o->getPhysics()));

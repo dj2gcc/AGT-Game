@@ -23,8 +23,6 @@ protected:
 
 public:
 
-	
-
 	virtual ~SkillBase(){}
 
 	std::string getName() { return _Name; }
@@ -34,10 +32,14 @@ public:
 	float getDuration() { return _Duration; }
 	float getCast() { return _Cast; }
 	double getRange() { return _Range; }
+	int getBaseDamage() { return _BaseDamage; }
+	double getApplied() { return _Applied; }
 
 	virtual void calculateDamage(Stats attributes) = 0;
 
 	virtual void updateProgress(float time) = 0;
+
+	virtual SkillBase* getCopy(SkillBase* s) = 0;
 
 	void setProgress(float p) { _Progress = p; }
 };

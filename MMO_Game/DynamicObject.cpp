@@ -27,7 +27,7 @@ DynamicObject::DynamicObject() : Object()
 	
 }
 
-DynamicObject::DynamicObject(Ogre::String model) : Object()
+DynamicObject::DynamicObject(Ogre::String model, Ogre::Vector3 p) : Object()
 {
 	_DefaultAnimation = NULL;
 	_AdditionalAnimation = NULL;
@@ -51,7 +51,7 @@ DynamicObject::DynamicObject(Ogre::String model) : Object()
 
 	setDefaultAnimation(Idle);
 
-	_BodyNode = OgreManager::Instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(Ogre::StringConverter::toString(_ID) + "Node", Ogre::Vector3(500, 200, 500));
+	_BodyNode = OgreManager::Instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(Ogre::StringConverter::toString(_ID) + "Node", p);
 	_ChaseNode = _BodyNode->createChildSceneNode(_BodyNode->getName() + "Chase");
 	_BodyNode->attachObject(_Body);
 	_ChaseNode->translate(0, 10, -30, Ogre::Node::TS_PARENT);
@@ -59,6 +59,8 @@ DynamicObject::DynamicObject(Ogre::String model) : Object()
 	_BodyNode->scale(20, 20, 20);
 
 	_Height = _Body->getBoundingRadius();
+
+	_BodyNode->setPosition(_BodyNode->getPosition().x, TerrainManager::Instance()->getTerrainHeight(_BodyNode->getPosition().x, _BodyNode->getPosition().z) + _Height, _BodyNode->getPosition().z);
 
 	_Motion._Position = _BodyNode->getPosition();
 	_Motion._Facing = Ogre::Vector3(1, _Motion._Position.y, 0);
@@ -78,6 +80,12 @@ DynamicObject::~DynamicObject()
 	_ChaseNode->detachAllObjects();
 	OgreManager::Instance()->getSceneManager()->getRootSceneNode()->removeAndDestroyChild(Ogre::StringConverter::toString(Object::_ID) + "Node");
 	OgreManager::Instance()->getSceneManager()->destroyEntity(_Body);
+}
+
+void DynamicObject::setPosition(Ogre::Vector3 p)
+{
+	_BodyNode->setPosition(p);
+	_Motion._Position = p;
 }
 
 void DynamicObject::defineAnimationStates(AnimationStates states)
@@ -269,7 +277,7 @@ void DynamicObject::Jump()
 
 		setAdditionalAnimation(JumpLoop, Overriding);
 
-		_Motion._Velocity.y = (40 + (_Motion._Mass * _Motion._Velocity.y) / _Motion._Mass);
+		_Motion._Velocity.y = (/*40*/ + (_Motion._Mass * _Motion._Velocity.y) / _Motion._Mass);
 	}
 }
 

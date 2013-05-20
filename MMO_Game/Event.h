@@ -2,8 +2,9 @@
 #include "IdManager.h"
 #include "Ogre.h"
 #include "Character.h"
+#include <delegate/delegate.hpp>
 
-class BinPart;
+typedef srutil::delegate1<void, Character*> EventDelegate;
 
 class Event
 {
@@ -11,19 +12,21 @@ private:
 
 	int _ID;
 
-	Ogre::Vector3* _Position;
+	Character* _Owner;
 	float _Radius;	
 
+	EventDelegate _Action;
 
 public:
 
-	BinPart* _Part;
-
-	Event(Ogre::Vector3* p, float r)
+	Event(Character* p, float r, EventDelegate d, int& id)
 	{
 		_ID = IDManager->newEventID();
-		_Position = p;
+		_Owner = p;
 		_Radius = r;
+		_Action = d;
+
+		id = _ID;
 	}
 
 	~Event()
@@ -32,9 +35,10 @@ public:
 
 	void executeEvent(Character* p)
 	{
+		_Action(p);
 	}
 
-	Ogre::Vector3 getPosition() { return *_Position; }
+	Ogre::Vector3 getPosition() { return _Owner->getPosition(); }
 	float getRadius() { return _Radius; }
 	int getID() { return _ID; }
 };

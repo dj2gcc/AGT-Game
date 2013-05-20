@@ -45,7 +45,7 @@ protected:
 
 public:
 	DynamicObject();
-	DynamicObject(Ogre::String model);
+	DynamicObject(Ogre::String model, Ogre::Vector3 p);
 	virtual ~DynamicObject();
 
 	void setDirection(Ogre::Vector3 dir);
@@ -57,6 +57,8 @@ public:
 	void defineAnimationStates(AnimationStates states);
 
 	void setDefaultAnimation(Animation animation);
+
+	void setPosition(Ogre::Vector3 p);
 
 	void setAdditionalAnimation(Animation animation, AnimationPlan plan);
 

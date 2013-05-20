@@ -200,8 +200,14 @@ void GUIRenderer::update(float tslf)
 
 	if(_TargetHpBar->isVisible())
 	{
-		_TargetHpBar->setProgress(toPercentage(_Player->_Target->getCombat()->_Attributes.hp, _Player->_Target->getCombat()->_Attributes.maxHp));
-		_TargetMpBar->setProgress(toPercentage(_Player->_Target->getCombat()->_Attributes.mp, _Player->_Target->getCombat()->_Attributes.maxMp));
+		if(_Player->_Target)
+		{
+			_TargetHpBar->setProgress(toPercentage(_Player->_Target->getCombat()->_Attributes.hp, _Player->_Target->getCombat()->_Attributes.maxHp));
+			_TargetMpBar->setProgress(toPercentage(_Player->_Target->getCombat()->_Attributes.mp, _Player->_Target->getCombat()->_Attributes.maxMp));
+		}else
+		{
+			showTarget(false);
+		}
 	}
 
 	if(_Player->getCombat()->getCast())

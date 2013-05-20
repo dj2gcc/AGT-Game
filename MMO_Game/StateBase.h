@@ -1,9 +1,15 @@
+#include<string>
+
 class Telegram;
 
 template <class object_type>
 
 class StateBase
 {
+protected:
+
+	std::string _Name;
+
 public:
 
 	virtual ~StateBase(){}
@@ -15,4 +21,6 @@ public:
 	virtual void Exit(object_type* o) {}
 
 	virtual bool OnMessage(object_type* o, const Telegram& t) {return true;}
+
+	std::string getStateName() { return _Name; }
 };

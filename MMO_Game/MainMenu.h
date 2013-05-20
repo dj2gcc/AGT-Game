@@ -21,6 +21,8 @@ private:
 	CEGUI::Window* _EditButton;
 	CEGUI::Window* _QuitButton;
 
+	std::string _ChangeState;
+
 public:
 
 	MainMenu();

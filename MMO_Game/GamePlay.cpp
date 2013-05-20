@@ -4,11 +4,13 @@
 GamePlay::GamePlay()
 {
 	_OgreManager = StateManager.getOgreManager();
+	_ChangeState = "";
 }
 
 GamePlay::GamePlay(OgreManager* om)
 {
 	_OgreManager = om;
+	_ChangeState = "";
 }
 
 GamePlay::~GamePlay()
@@ -111,6 +113,22 @@ void GamePlay::update()
 	_OgreManager->getRoot()->renderOneFrame();
 
 	_OgreManager->getWindow()->swapBuffers(true);
+
+	if(_ChangeState != "")
+	{
+		if(_ChangeState == "Quit")
+		{
+			if(StateManager.getMainMenu())
+			{
+				_ChangeState = "";
+				StateManager.ChangeState(MenuState);
+			}else
+			{
+				_ChangeState = "";
+				StateManager.ChangeState(CleanupState);
+			}
+		}
+	}
 }
 
 //Ogre::WindowListener
@@ -237,10 +255,7 @@ bool GamePlay::mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id 
 
 bool GamePlay::CEGUIEventQuit(const CEGUI::EventArgs& arg)
 {
-	if(StateManager.getMainMenu())
-		StateManager.ChangeState(MenuState);
-	else
-		StateManager.ChangeState(CleanupState);
+	_ChangeState = "Quit";
 
 	return true;
 }

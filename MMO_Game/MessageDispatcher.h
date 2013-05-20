@@ -18,7 +18,7 @@ private:
 
 	std::set<Telegram, classcomp> _PriorityQ;
 
-	void _Discharge(Character *receiver,Telegram& msg);
+	void _Discharge(Controller *receiver,Telegram& msg);
 
 	void* getObject(int id);
 

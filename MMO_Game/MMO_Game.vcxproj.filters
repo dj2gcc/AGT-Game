@@ -99,12 +99,6 @@
     <ClCompile Include="PlayerController.cpp">
       <Filter>AI</Filter>
     </ClCompile>
-    <ClCompile Include="BinPart.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
-    <ClCompile Include="BinTree.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
     <ClCompile Include="AIController.cpp">
       <Filter>AI</Filter>
     </ClCompile>
@@ -213,12 +207,6 @@
       <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="Controller.h">
-      <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="BinPart.h">
-      <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="BinTree.h">
       <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">

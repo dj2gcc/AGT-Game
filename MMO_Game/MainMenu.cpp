@@ -3,11 +3,13 @@
 MainMenu::MainMenu() : Interface()
 {
 	_OgreManager = StateManager.getOgreManager();
+	_ChangeState = "";
 }
 
 MainMenu::MainMenu(OgreManager* om) : Interface()
 {
 	_OgreManager = om;
+	_ChangeState = "";
 }
 
 MainMenu::~MainMenu()
@@ -75,6 +77,25 @@ void MainMenu::update()
 	_OgreManager->getRoot()->renderOneFrame();
 
 	_OgreManager->getWindow()->swapBuffers(true);
+
+	if(_ChangeState != "")
+	{
+		if(_ChangeState == "Quit")
+		{
+			_ChangeState = "";
+			StateManager.ChangeState(CleanupState);			
+		}else
+			if(_ChangeState == "Play")
+			{
+				_ChangeState = "";
+				StateManager.ChangeState(PlayState);
+			}else
+				if(_ChangeState == "Edit")
+				{
+					_ChangeState = "";
+					StateManager.ChangeState(EditState);
+				}
+	}
 }
 
 //Ogre::WindowListener
@@ -137,21 +158,20 @@ bool MainMenu::mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id 
 
 bool MainMenu::CEGUIEventPlay(const CEGUI::EventArgs& arg)
 {
-	StateManager.ChangeState(PlayState);
-
+	_ChangeState = "Play";
 	return true;
 }
 
 bool MainMenu::CEGUIEventQuit(const CEGUI::EventArgs& arg)
 {
-	StateManager.ChangeState(CleanupState);
+	_ChangeState = "Quit";
 
 	return true;
 }
 
 bool MainMenu::CEGUIEventEdit(const CEGUI::EventArgs& arg)
 {
-	StateManager.ChangeState(EditState);
+	_ChangeState = "Edit";
 
 	return true;
 }

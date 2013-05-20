@@ -22,10 +22,6 @@ Attack::Attack()
 	_Range = 100;
 }
 
-Attack::Attack(Attack& a)
-{
-}
-
 Attack::~Attack()
 {
 }
@@ -40,6 +36,11 @@ void Attack::updateProgress(float time)
 	_Progress += time;
 }
 
+SkillBase* Attack::getCopy(SkillBase* s)
+{
+	return new Attack(s);
+}
+
 // Attack end
 
 // Pain : public SkillBase
@@ -49,8 +50,8 @@ Pain::Pain()
 	_Type = "Dot";
 	_Name = "Pain";
 
-	_BaseDamage = 50;
-	_Damage = 50;
+	_BaseDamage = 30;
+	_Damage = 30;
 
 	_Cast = 2;
 
@@ -60,11 +61,7 @@ Pain::Pain()
 
 	_Applied = Time->Global();
 
-	_Range = 1000;
-}
-
-Pain::Pain(Pain& a)
-{
+	_Range = 900;
 }
 
 Pain::~Pain()
@@ -79,6 +76,11 @@ void Pain::calculateDamage(Stats attributes)
 void Pain::updateProgress(float time)
 {
 	_Progress += time;
+}
+
+SkillBase* Pain::getCopy(SkillBase* s)
+{
+	return new Pain(s);
 }
 
 // Pain end
@@ -104,10 +106,6 @@ Heal::Heal()
 	_Range = 500;
 }
 
-Heal::Heal(Heal& a)
-{
-}
-
 Heal::~Heal()
 {
 }
@@ -120,6 +118,11 @@ void Heal::calculateDamage(Stats attributes)
 void Heal::updateProgress(float time)
 {
 	_Progress += time;
+}
+
+SkillBase* Heal::getCopy(SkillBase* s)
+{
+	return new Heal(s);
 }
 
 // Heal end
@@ -145,10 +148,6 @@ StaminaBuff::StaminaBuff()
 	_Range = 100;
 }
 
-StaminaBuff::StaminaBuff(StaminaBuff& a)
-{
-}
-
 StaminaBuff::~StaminaBuff()
 {
 }
@@ -161,6 +160,11 @@ void StaminaBuff::calculateDamage(Stats attributes)
 void StaminaBuff::updateProgress(float time)
 {
 	_Progress += time;
+}
+
+SkillBase* StaminaBuff::getCopy(SkillBase* s)
+{
+	return new StaminaBuff(s);
 }
 
 // StaminaBuff end
@@ -186,10 +190,6 @@ PowerDebuff::PowerDebuff()
 	_Range = 100;
 }
 
-PowerDebuff::PowerDebuff(PowerDebuff& a)
-{
-}
-
 PowerDebuff::~PowerDebuff()
 {
 }
@@ -202,6 +202,11 @@ void PowerDebuff::calculateDamage(Stats attributes)
 void PowerDebuff::updateProgress(float time)
 {
 	_Progress += time;
+}
+
+SkillBase* PowerDebuff::getCopy(SkillBase* s)
+{
+	return new PowerDebuff(s);
 }
 
 // PowerDebuff end
@@ -227,10 +232,6 @@ Tick::Tick()
 	_Range = 9999999999;
 }
 
-Tick::Tick(Tick& a)
-{
-}
-
 Tick::~Tick()
 {
 }
@@ -243,6 +244,11 @@ void Tick::setPower(int p)
 void Tick::updateProgress(float time)
 {
 	_Progress += time;
+}
+
+SkillBase* Tick::getCopy(SkillBase* s)
+{
+	return new Tick(s);
 }
 
 //Tick end

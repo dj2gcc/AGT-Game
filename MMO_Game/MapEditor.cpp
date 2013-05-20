@@ -5,6 +5,7 @@ MapEditor::MapEditor()
 	slotSize = 512;
 	data.size = 512 * 4;
 	data.buffer = new unsigned char[data.size*data.size];
+	_ChangeState = "";
 }
 
 MapEditor::~MapEditor()
@@ -73,6 +74,23 @@ void MapEditor::update()
 	OgreManager::Instance()->getRoot()->renderOneFrame();
 
 	OgreManager::Instance()->getWindow()->swapBuffers(true);
+
+	if(_ChangeState != "")
+	{
+		if(_ChangeState == "Quit")
+		{
+			if(StateManager.getMainMenu())
+			{
+				_ChangeState = "";
+				StateManager.ChangeState(MenuState);
+			}else
+			{
+				_ChangeState = "";
+				StateManager.ChangeState(CleanupState);
+			}
+		}
+	}
+
 }
 
 //Ogre::WindowListener
@@ -137,10 +155,7 @@ bool MapEditor::mouseReleased( const OIS::MouseEvent& evt, OIS::MouseButtonID id
 
 bool MapEditor::CEGUIEventQuit(const CEGUI::EventArgs& arg)
 {
-	if(StateManager.getMainMenu())
-		StateManager.ChangeState(MenuState);
-	else
-		StateManager.ChangeState(CleanupState);
+	_ChangeState = "Quit";
 
 	return true;
 }
